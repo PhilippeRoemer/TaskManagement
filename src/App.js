@@ -5,36 +5,37 @@ import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc } from "firebase
 
 function App() {
     const [projects, setProjects] = useState([]);
-    const [newProject, setNewProject] = useState("");
-    const [tasks, setTasks] = useState([]);
+    const [newProject, setNewProject] = useState("blank");
+    const [selectedProject, setSelectedProject] = useState([]);
 
+    const [tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState("");
     const [newUpdatedTask, setNewUpdatedTask] = useState("");
 
     const [updateList, setUpdateList] = useState(false);
 
-    /* DATA REFERENCES */
     const tasksCollectionRef = collection(db, "tasks");
     const projectsCollectionRef = collection(db, "projects");
 
-    /* GET TASKS */
+    /* GET TASKS AFTER THE PROJECT IS SELECTED*/
     useEffect(() => {
         const getTasks = async () => {
             const data = await getDocs(tasksCollectionRef);
-            console.log(data);
-            setTasks(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-        };
+            const allTasks = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+            console.log(allTasks);
 
+            /* Filters tasks by the selected project */
+            const filteredProject = allTasks.filter((id) => id.project === selectedProject);
+            console.log(filteredProject);
+            setTasks(filteredProject);
+        };
         getTasks();
-    }, [updateList]);
+    }, [selectedProject, updateList]);
 
     /* GET PROJECTS */
     useEffect(() => {
         const getProjects = async () => {
             const data = await getDocs(projectsCollectionRef);
-            console.log("Projects");
-            console.log(data);
-            console.log(data.docs);
             setProjects(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
         };
 
@@ -44,9 +45,9 @@ function App() {
     /* CREATE PROJECT */
     const createProject = async () => {
         await addDoc(projectsCollectionRef, {
-            id: newProject,
-            test: "Testing",
+            project: newProject,
         });
+
         document.getElementById("newProject").value = "";
         setUpdateList(!updateList);
     };
@@ -60,7 +61,7 @@ function App() {
 
     /* CREATE TASK */
     const createTask = async () => {
-        await addDoc(tasksCollectionRef, { task: newTask });
+        await addDoc(tasksCollectionRef, { task: newTask, project: selectedProject, completed: false });
         document.getElementById("newTask").value = "";
         setUpdateList(!updateList);
     };
@@ -87,6 +88,16 @@ function App() {
         setUpdateList(!updateList);
     };
 
+    /* COMPLETE TASK */
+    const completeTask = async (e) => {
+        const taskID = e.target.id;
+        const taskDoc = doc(db, "tasks", taskID);
+        const newFields = { complete: true };
+
+        await updateDoc(taskDoc, newFields);
+        setUpdateList(!updateList);
+    };
+
     return (
         <div>
             {/* SIDEBAR/ADD NEW PROJECT */}
@@ -101,10 +112,18 @@ function App() {
                     }}
                 />
                 <button onClick={createProject}>Add Project</button>
+
                 {projects.map((project) => {
                     return (
                         <div>
-                            <p>{project.id}</p>
+                            <p
+                                onClick={() => {
+                                    setSelectedProject(project.project);
+                                }}
+                            >
+                                {project.project}
+                            </p>
+                            {/* DELETE PROJECT */}
                             <button
                                 onClick={() => {
                                     deleteProject(project.id);
@@ -118,40 +137,64 @@ function App() {
             </div>
             {/* PAGE CONTENT/PROJECT TASKS */}
             <div className="pageContent">
-                <input
-                    type="text"
-                    placeholder="Task"
-                    id="newTask"
-                    onChange={(e) => {
-                        setNewTask(e.target.value);
-                    }}
-                />
-                <button onClick={createTask}>Add Task</button>
+                <h1>{selectedProject}</h1>
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Task"
+                        id="newTask"
+                        onChange={(e) => {
+                            setNewTask(e.target.value);
+                        }}
+                    />
+                    <button onClick={createTask}>Add Task</button>
+                </div>
+                <h1>To Do</h1>
                 {tasks.map((task) => {
-                    return (
-                        <div>
-                            <p>Project: {task.project}</p>
-                            <p>Task: {task.task}</p>
-                            <input
-                                type="text"
-                                placeholder="Enter new task"
-                                id="updatedTask"
-                                onChange={(e) => {
-                                    setNewUpdatedTask(e.target.value);
-                                }}
-                            />
-                            <button onClick={updateTask} id={task.id}>
-                                Update Task
-                            </button>
-                            <button
-                                onClick={() => {
-                                    deleteTask(task.id);
-                                }}
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    );
+                    if (task.completed === false) {
+                        return (
+                            <div>
+                                <p>{task.task}</p>
+                                <input
+                                    type="text"
+                                    placeholder="Enter new task"
+                                    id="updatedTask"
+                                    onChange={(e) => {
+                                        setNewUpdatedTask(e.target.value);
+                                    }}
+                                />
+                                <button onClick={updateTask} id={task.id}>
+                                    Update Task
+                                </button>
+                                <button onClick={completeTask}>Complete</button>
+                                <button
+                                    onClick={() => {
+                                        deleteTask(task.id);
+                                    }}
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        );
+                    }
+                })}
+                <h1>Completed</h1>
+                {tasks.map((task) => {
+                    if (task.completed === true) {
+                        return (
+                            <div>
+                                <p>{task.task}</p>
+
+                                <button
+                                    onClick={() => {
+                                        deleteTask(task.id);
+                                    }}
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        );
+                    }
                 })}
             </div>
         </div>
