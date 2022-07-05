@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { db } from "./firebase-config";
 import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc } from "firebase/firestore";
+import trashIcon from "../src/images/trash_icon.png";
 
 function App() {
     const [projects, setProjects] = useState([]);
@@ -57,7 +58,10 @@ function App() {
     /* DELETE PROJECT */
     const deleteProject = async (id) => {
         const taskDoc = doc(db, "projects", id);
-        await deleteDoc(taskDoc);
+        if (window.confirm("Are you sure you want to delete this project?")) {
+            await deleteDoc(taskDoc);
+        }
+
         setUpdateList(!updateList);
     };
 
@@ -108,7 +112,7 @@ function App() {
                 <h1>Projects</h1>
                 {projects.map((project) => {
                     return (
-                        <div>
+                        <div className="projectList">
                             <p
                                 onClick={() => {
                                     setSelectedProject(project.project);
@@ -117,39 +121,38 @@ function App() {
                                 {project.project}
                             </p>
                             {/* DELETE PROJECT */}
-                            <button
+                            <img
+                                src={trashIcon}
+                                className="projectDelete"
                                 onClick={() => {
                                     deleteProject(project.id);
                                 }}
-                            >
-                                Delete
-                            </button>
+                            />
                         </div>
                     );
                 })}
-                <div className="addTaskContainer">
-                    <div
-                        className="addButton"
-                        onClick={() => {
-                            setToggleAddProject(!toggleAddProject);
-                        }}
-                    >
-                        {!toggleAddProject ? <p>+</p> : <p>-</p>}
-                    </div>
-                    {toggleAddProject ? (
-                        <div>
-                            <input
-                                type="text"
-                                placeholder="Project"
-                                id="newProject"
-                                onChange={(e) => {
-                                    setNewProject(e.target.value);
-                                }}
-                            />
-                            <button onClick={createProject}>Add Project</button>
-                        </div>
-                    ) : null}
+
+                <div
+                    className="addProjectButton"
+                    onClick={() => {
+                        setToggleAddProject(!toggleAddProject);
+                    }}
+                >
+                    {!toggleAddProject ? <p>+ Add a new project</p> : <p>- Add a new project</p>}
                 </div>
+                {toggleAddProject ? (
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Project"
+                            id="newProject"
+                            onChange={(e) => {
+                                setNewProject(e.target.value);
+                            }}
+                        />
+                        <button onClick={createProject}>Add Project</button>
+                    </div>
+                ) : null}
             </div>
             {/* PAGE CONTENT/PROJECT TASKS */}
             <div className="pageContent">
@@ -179,7 +182,7 @@ function App() {
                                         </button>
                                         {/* MARK TASK AS COMPLETED */}
                                         <button onClick={completeTask} id={task.id}>
-                                            Complete
+                                            Completed
                                         </button>
                                         {/* DELETE TASK */}
                                         <button
@@ -187,21 +190,21 @@ function App() {
                                                 deleteTask(task.id);
                                             }}
                                         >
-                                            Delete
+                                            Remove
                                         </button>
                                     </div>
                                 );
                             }
                         })}
-
+                        {/* ADD TASK */}
                         <div className="addTaskContainer">
                             <div
-                                className="addButton"
+                                className="addTaskButton"
                                 onClick={() => {
                                     setToggleAddTask(!toggleAddTask);
                                 }}
                             >
-                                {!toggleAddTask ? <p>+</p> : <p>-</p>}
+                                {!toggleAddTask ? <p>+ Add a new task</p> : <p>- Add a new task</p>}
                             </div>
                             {toggleAddTask ? (
                                 <div>
@@ -222,7 +225,7 @@ function App() {
                         {tasks.map((task) => {
                             if (task.completed === true) {
                                 return (
-                                    <div>
+                                    <div className="completedTasks">
                                         <p>{task.task}</p>
 
                                         <button
@@ -230,7 +233,7 @@ function App() {
                                                 deleteTask(task.id);
                                             }}
                                         >
-                                            Delete
+                                            Remove
                                         </button>
                                     </div>
                                 );
