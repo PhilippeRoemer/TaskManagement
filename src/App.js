@@ -5,10 +5,12 @@ import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc } from "firebase
 
 function App() {
     const [projects, setProjects] = useState([]);
+    const [toggleAddProject, setToggleAddProject] = useState(false);
     const [newProject, setNewProject] = useState("blank");
     const [selectedProject, setSelectedProject] = useState([]);
 
     const [tasks, setTasks] = useState([]);
+    const [toggleAddTask, setToggleAddTask] = useState(false);
     const [newTask, setNewTask] = useState("");
     const [newUpdatedTask, setNewUpdatedTask] = useState("");
 
@@ -23,7 +25,6 @@ function App() {
             const data = await getDocs(tasksCollectionRef);
             const allTasks = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
             console.log(allTasks);
-
             /* Filters tasks by the selected project */
             const filteredProject = allTasks.filter((id) => id.project === selectedProject);
             console.log(filteredProject);
@@ -49,6 +50,7 @@ function App() {
         });
 
         document.getElementById("newProject").value = "";
+        setToggleAddProject(false);
         setUpdateList(!updateList);
     };
 
@@ -63,6 +65,7 @@ function App() {
     const createTask = async () => {
         await addDoc(tasksCollectionRef, { task: newTask, project: selectedProject, completed: false });
         document.getElementById("newTask").value = "";
+        setToggleAddTask(false);
         setUpdateList(!updateList);
     };
 
@@ -92,7 +95,7 @@ function App() {
     const completeTask = async (e) => {
         const taskID = e.target.id;
         const taskDoc = doc(db, "tasks", taskID);
-        const newFields = { complete: true };
+        const newFields = { completed: true };
 
         await updateDoc(taskDoc, newFields);
         setUpdateList(!updateList);
@@ -103,16 +106,6 @@ function App() {
             {/* SIDEBAR/ADD NEW PROJECT */}
             <div className="sidebar">
                 <h1>Projects</h1>
-                <input
-                    type="text"
-                    placeholder="Project"
-                    id="newProject"
-                    onChange={(e) => {
-                        setNewProject(e.target.value);
-                    }}
-                />
-                <button onClick={createProject}>Add Project</button>
-
                 {projects.map((project) => {
                     return (
                         <div>
@@ -134,68 +127,117 @@ function App() {
                         </div>
                     );
                 })}
+                <div className="addTaskContainer">
+                    <div
+                        className="addButton"
+                        onClick={() => {
+                            setToggleAddProject(!toggleAddProject);
+                        }}
+                    >
+                        {!toggleAddProject ? <p>+</p> : <p>-</p>}
+                    </div>
+                    {toggleAddProject ? (
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="Project"
+                                id="newProject"
+                                onChange={(e) => {
+                                    setNewProject(e.target.value);
+                                }}
+                            />
+                            <button onClick={createProject}>Add Project</button>
+                        </div>
+                    ) : null}
+                </div>
             </div>
             {/* PAGE CONTENT/PROJECT TASKS */}
             <div className="pageContent">
-                <h1>{selectedProject}</h1>
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Task"
-                        id="newTask"
-                        onChange={(e) => {
-                            setNewTask(e.target.value);
-                        }}
-                    />
-                    <button onClick={createTask}>Add Task</button>
-                </div>
-                <h1>To Do</h1>
-                {tasks.map((task) => {
-                    if (task.completed === false) {
-                        return (
-                            <div>
-                                <p>{task.task}</p>
-                                <input
-                                    type="text"
-                                    placeholder="Enter new task"
-                                    id="updatedTask"
-                                    onChange={(e) => {
-                                        setNewUpdatedTask(e.target.value);
-                                    }}
-                                />
-                                <button onClick={updateTask} id={task.id}>
-                                    Update Task
-                                </button>
-                                <button onClick={completeTask}>Complete</button>
-                                <button
-                                    onClick={() => {
-                                        deleteTask(task.id);
-                                    }}
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                        );
-                    }
-                })}
-                <h1>Completed</h1>
-                {tasks.map((task) => {
-                    if (task.completed === true) {
-                        return (
-                            <div>
-                                <p>{task.task}</p>
+                {selectedProject == "" ? (
+                    <h1>Select a project</h1>
+                ) : (
+                    <div>
+                        <h1>{selectedProject}</h1>
 
-                                <button
-                                    onClick={() => {
-                                        deleteTask(task.id);
-                                    }}
-                                >
-                                    Delete
-                                </button>
+                        <h1>To Do</h1>
+                        {tasks.map((task) => {
+                            if (task.completed === false) {
+                                return (
+                                    <div>
+                                        {/* UPDATE TASK */}
+                                        <p>{task.task}</p>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter new task"
+                                            id="updatedTask"
+                                            onChange={(e) => {
+                                                setNewUpdatedTask(e.target.value);
+                                            }}
+                                        />
+                                        <button onClick={updateTask} id={task.id}>
+                                            Update Task
+                                        </button>
+                                        {/* MARK TASK AS COMPLETED */}
+                                        <button onClick={completeTask} id={task.id}>
+                                            Complete
+                                        </button>
+                                        {/* DELETE TASK */}
+                                        <button
+                                            onClick={() => {
+                                                deleteTask(task.id);
+                                            }}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                );
+                            }
+                        })}
+
+                        <div className="addTaskContainer">
+                            <div
+                                className="addButton"
+                                onClick={() => {
+                                    setToggleAddTask(!toggleAddTask);
+                                }}
+                            >
+                                {!toggleAddTask ? <p>+</p> : <p>-</p>}
                             </div>
-                        );
-                    }
-                })}
+                            {toggleAddTask ? (
+                                <div>
+                                    <input
+                                        type="text"
+                                        placeholder="Task"
+                                        id="newTask"
+                                        onChange={(e) => {
+                                            setNewTask(e.target.value);
+                                        }}
+                                    />
+                                    <button onClick={createTask}>Add Task</button>
+                                </div>
+                            ) : null}
+                        </div>
+
+                        <h1>Completed</h1>
+                        {tasks.map((task) => {
+                            if (task.completed === true) {
+                                return (
+                                    <div>
+                                        <p>{task.task}</p>
+
+                                        <button
+                                            onClick={() => {
+                                                deleteTask(task.id);
+                                            }}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                );
+                            }
+                        })}
+                    </div>
+                )}
             </div>
         </div>
     );
