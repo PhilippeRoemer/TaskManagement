@@ -11,6 +11,7 @@ function App() {
     const [selectedProject, setSelectedProject] = useState([]);
 
     const [tasks, setTasks] = useState([]);
+    const [toggleTaskInfo, setToggleTaskInfo] = useState([]);
     const [toggleAddTask, setToggleAddTask] = useState(false);
     const [newTask, setNewTask] = useState("");
     const [newUpdatedTask, setNewUpdatedTask] = useState("");
@@ -85,6 +86,7 @@ function App() {
             await updateDoc(taskDoc, newFields);
             document.getElementById("updatedTask").value = "";
             setUpdateList(!updateList);
+            setNewUpdatedTask("");
         }
     };
 
@@ -161,37 +163,49 @@ function App() {
                 ) : (
                     <div>
                         <h1>{selectedProject}</h1>
-
+                        {/* LIST OUT TO DO TASKS */}
                         <h1>To Do</h1>
                         {tasks.map((task) => {
                             if (task.completed === false) {
                                 return (
-                                    <div>
-                                        {/* UPDATE TASK */}
-                                        <p>{task.task}</p>
-                                        <input
-                                            type="text"
-                                            placeholder="Enter new task"
-                                            id="updatedTask"
-                                            onChange={(e) => {
-                                                setNewUpdatedTask(e.target.value);
-                                            }}
-                                        />
-                                        <button onClick={updateTask} id={task.id}>
-                                            Update Task
-                                        </button>
-                                        {/* MARK TASK AS COMPLETED */}
-                                        <button onClick={completeTask} id={task.id}>
-                                            Completed
-                                        </button>
-                                        {/* DELETE TASK */}
-                                        <button
-                                            onClick={() => {
-                                                deleteTask(task.id);
+                                    <div className="task">
+                                        {/* TASK */}
+                                        <p
+                                            id={task.task}
+                                            onClick={(e) => {
+                                                setToggleTaskInfo(e.target.id);
                                             }}
                                         >
-                                            Remove
-                                        </button>
+                                            {task.task}
+                                        </p>
+                                        {toggleTaskInfo === task.task ? (
+                                            <div className="taskInfo">
+                                                {/* TASK INFO - UPDATE/COMPLETE/REMOVE */}
+                                                <input
+                                                    type="text"
+                                                    placeholder="Edit current task"
+                                                    id="updatedTask"
+                                                    onChange={(e) => {
+                                                        setNewUpdatedTask(e.target.value);
+                                                    }}
+                                                />
+                                                <button onClick={updateTask} id={task.id}>
+                                                    Update Task
+                                                </button>
+                                                {/* MARK TASK AS COMPLETED */}
+                                                <button onClick={completeTask} id={task.id}>
+                                                    Completed
+                                                </button>
+                                                {/* DELETE TASK */}
+                                                <button
+                                                    onClick={() => {
+                                                        deleteTask(task.id);
+                                                    }}
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        ) : null}
                                     </div>
                                 );
                             }
