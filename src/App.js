@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { db } from "./firebase-config";
-import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc, Timestamp } from "firebase/firestore";
 import trashIcon from "../src/images/trash_icon.png";
 import sidebarImage from "../src/images/sidebar_background.png";
 
@@ -69,7 +69,7 @@ function App() {
 
     /* CREATE TASK */
     const createTask = async () => {
-        await addDoc(tasksCollectionRef, { task: newTask, project: selectedProject, completed: false });
+        await addDoc(tasksCollectionRef, { task: newTask, project: selectedProject, completed: false, created: Timestamp.now() });
         document.getElementById("newTask").value = "";
         setToggleAddTask(false);
         setUpdateList(!updateList);
@@ -102,7 +102,7 @@ function App() {
     const completeTask = async (e) => {
         const taskID = e.target.id;
         const taskDoc = doc(db, "tasks", taskID);
-        const newFields = { completed: true };
+        const newFields = { completed: true, dateCompleted: Timestamp.now() };
 
         await updateDoc(taskDoc, newFields);
         setUpdateList(!updateList);
