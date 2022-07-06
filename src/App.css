@@ -5,17 +5,19 @@
 }
 
 body {
-    color: #eee;
+    color: #fff;
 }
 
 .sidebar {
     width: 25%;
     height: 100vh;
-    background-color: #3d3d3d;
     position: fixed;
-    border-right: 1px solid #eee;
-    padding-top: 10%;
+    display: flex;
+    justify-content: center;
     text-align: center;
+    flex-direction: column;
+    -webkit-box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.25);
+    box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.25);
 }
 
 .sidebar h1,
@@ -28,23 +30,33 @@ h3 {
     justify-content: center;
     padding: 10px;
     align-items: center;
+    background-color: #051e3470;
+    padding: 10px;
+    width: 180px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    border-radius: 15px;
 }
 
 .projectDelete {
     margin-left: 10px;
     height: 14px;
+    filter: invert(1);
 }
 
-.sidebar p:hover {
+.projectList:hover {
     cursor: pointer;
+    background-color: #051e34a8;
 }
 
 .pageContent {
     margin-left: 25%;
     height: 100vh;
-    background-color: #666;
+    background-color: #f6f7f9;
+    color: #1b3a57;
     padding-top: 3%;
     padding-left: 5%;
+    padding-right: 5%;
 }
 
 .pageContent h1 {
@@ -55,11 +67,15 @@ h3 {
     padding-bottom: 15px;
 }
 
-.task {
-    width: 55%;
+.taskDiv {
     justify-content: space-between;
     margin-bottom: 20px;
     cursor: pointer;
+    background-color: #eaeaea;
+    color: #1b3a57;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .taskName {
@@ -68,29 +84,43 @@ h3 {
 
 .taskInfo {
     display: flex;
+    background-color: #f6f7f9;
+    padding: 20px 5px 20px 5px;
+    margin-top: 10px;
+    border-radius: 10px;
+    justify-content: space-around;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #1b3a572e;
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .addTaskButton {
     padding: 7px;
     cursor: pointer;
-    background-color: #bbb;
+    background-color: #054257;
     width: 140px;
     text-align: center;
     border-radius: 10px;
-    color: #3d3d3d;
+    color: #fff;
+    margin-bottom: 15px;
     font-weight: bold;
 }
 
 .addProjectButton {
     padding: 7px;
-    cursor: pointer;
-    background-color: #bbb;
+    background-color: #051e3470;
+    width: 180px;
     border-radius: 10px;
-    color: #3d3d3d;
+    color: #fff;
     font-weight: bold;
     display: inline-block;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin: 0 auto;
+}
+
+.addProjectButton:hover {
+    cursor: pointer;
+    background-color: #051e34a8;
 }
 
 .addTaskContainer {
@@ -99,4 +129,96 @@ h3 {
 
 .completedTasks {
     display: flex;
+    background-color: #eaeaea;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 15px;
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.taskTitle {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 15px;
+}
+
+.button {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+.updateButton {
+    background-color: #054257;
+    color: #f6f7f9;
+}
+
+.completedButton {
+    background-color: #367b6d;
+    color: #f6f7f9;
+}
+
+.removeButton {
+    background-color: #b04848;
+    color: #f6f7f9;
+}
+
+.taskInputDiv {
+    display: flex;
+}
+
+.taskUpdateInput {
+    padding: 10px;
+    border-radius: 15px;
+    margin-right: 5px;
+    width: 200px;
+    border-style: solid;
+    border-color: #1b3a572e;
+    border-width: 1px;
+    border-radius: 15px;
+}
+
+.taskUpdateInput:focus {
+    outline: none !important;
+    border: 1px solid #1b3a572e;
+    box-shadow: 0 0 3px #1b3a5762;
+}
+
+.addTaskInput {
+    padding: 10px;
+    border-radius: 15px;
+    margin-right: 5px;
+    width: 200px;
+    border-style: solid;
+    border-color: #1b3a572e;
+    border-width: 1px;
+    border-radius: 15px;
+}
+
+.addTaskInput:focus {
+    outline: none !important;
+    border: 1px solid #1b3a572e;
+    box-shadow: 0 0 3px #1b3a5762;
+}
+
+.expandedAddTaskButton {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    font-weight: bold;
+    background-color: #054257;
+    color: #f6f7f9;
+}
+
+.expandedAddTaskContainer {
+    display: flex;
+}
+
+.completedTaskDelete {
+    height: 14px;
+    cursor: pointer;
 }
