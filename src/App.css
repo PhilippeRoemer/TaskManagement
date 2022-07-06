@@ -13,7 +13,7 @@ body {
     height: 100vh;
     background-color: #3d3d3d;
     position: fixed;
-    border-right: 2px solid #eee;
+    border-right: 1px solid #eee;
     padding-top: 10%;
     text-align: center;
 }
@@ -56,14 +56,18 @@ h3 {
 }
 
 .task {
-    display: flex;
     width: 55%;
     justify-content: space-between;
     margin-bottom: 20px;
+    cursor: pointer;
 }
 
 .taskName {
     width: 50%;
+}
+
+.taskInfo {
+    display: flex;
 }
 
 .addTaskButton {
