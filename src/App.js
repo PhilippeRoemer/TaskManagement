@@ -124,7 +124,7 @@ function App() {
                     .map((project) => {
                         return (
                             <div
-                                className="projectList"
+                                className={selectedProject === project.project ? "selectedSidebarProject" : "projectList"}
                                 onClick={() => {
                                     setSelectedProject(project.project);
                                 }}

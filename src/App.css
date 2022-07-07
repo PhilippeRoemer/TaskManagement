@@ -37,6 +37,9 @@ h3 {
     margin: 0 auto;
     margin-bottom: 15px;
     border-radius: 15px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #051e3400;
 }
 
 .projectDelete {
@@ -324,4 +327,20 @@ h3 {
     border-width: 1px;
     border-radius: 15px;
     background-color: #fff;
+}
+
+.selectedSidebarProject {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    align-items: center;
+    background-color: #051e3470;
+    padding: 10px;
+    width: 180px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #fff;
 }
