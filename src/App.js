@@ -15,6 +15,8 @@ function App() {
     const [toggleTaskInfo, setToggleTaskInfo] = useState([]);
     const [toggleAddTask, setToggleAddTask] = useState(false);
     const [newTask, setNewTask] = useState("");
+    const [newTaskType, setNewTaskType] = useState("");
+    const [newTaskPriority, setNewTaskPriority] = useState("");
     const [newUpdatedTask, setNewUpdatedTask] = useState("");
 
     const [updateList, setUpdateList] = useState(false);
@@ -50,6 +52,7 @@ function App() {
     const createProject = async () => {
         await addDoc(projectsCollectionRef, {
             project: newProject,
+            project_created: Timestamp.now(),
         });
 
         document.getElementById("newProject").value = "";
@@ -69,9 +72,11 @@ function App() {
 
     /* CREATE TASK */
     const createTask = async () => {
-        await addDoc(tasksCollectionRef, { task: newTask, project: selectedProject, completed: false, created: Timestamp.now() });
+        await addDoc(tasksCollectionRef, { task: newTask, project: selectedProject, completed: false, task_created: Timestamp.now(), type: newTaskType, priority: newTaskPriority });
         document.getElementById("newTask").value = "";
         setToggleAddTask(false);
+        setNewTaskPriority("");
+        setNewTaskType("");
         setUpdateList(!updateList);
     };
 
@@ -102,7 +107,7 @@ function App() {
     const completeTask = async (e) => {
         const taskID = e.target.id;
         const taskDoc = doc(db, "tasks", taskID);
-        const newFields = { completed: true, dateCompleted: Timestamp.now() };
+        const newFields = { completed: true, date_completed: Timestamp.now() };
 
         await updateDoc(taskDoc, newFields);
         setUpdateList(!updateList);
@@ -113,27 +118,30 @@ function App() {
             {/* SIDEBAR/ADD NEW PROJECT */}
             <div className="sidebar" style={{ backgroundImage: `url(${sidebarImage})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
                 <h1>Projects</h1>
-                {projects.map((project) => {
-                    return (
-                        <div
-                            className="projectList"
-                            onClick={() => {
-                                setSelectedProject(project.project);
-                            }}
-                        >
-                            <p>{project.project}</p>
-                            {/* DELETE PROJECT */}
-                            <img
-                                alt="#"
-                                src={trashIcon}
-                                className="projectDelete"
+
+                {projects
+                    .sort((a, b) => (a.project_created > b.project_created ? 1 : -1))
+                    .map((project) => {
+                        return (
+                            <div
+                                className="projectList"
                                 onClick={() => {
-                                    deleteProject(project.id);
+                                    setSelectedProject(project.project);
                                 }}
-                            />
-                        </div>
-                    );
-                })}
+                            >
+                                <p>{project.project}</p>
+                                {/* DELETE PROJECT */}
+                                <img
+                                    alt="#"
+                                    src={trashIcon}
+                                    className="projectDelete"
+                                    onClick={() => {
+                                        deleteProject(project.id);
+                                    }}
+                                />
+                            </div>
+                        );
+                    })}
 
                 <div
                     className="addProjectButton"
@@ -144,8 +152,9 @@ function App() {
                     {!toggleAddProject ? <p>+ Add a new project</p> : <p>- Add a new project</p>}
                 </div>
                 {toggleAddProject ? (
-                    <div>
+                    <div className="expandedAddProjectContainer">
                         <input
+                            className="addProjectInput"
                             type="text"
                             placeholder="Project"
                             id="newProject"
@@ -153,71 +162,82 @@ function App() {
                                 setNewProject(e.target.value);
                             }}
                         />
-                        <button onClick={createProject}>Add Project</button>
+                        <div className="expandedAddProjectButton" onClick={createProject}>
+                            Add Project
+                        </div>
                     </div>
                 ) : null}
             </div>
             {/* PAGE CONTENT/PROJECT TASKS */}
             <div className="pageContent">
                 {selectedProject == "" ? (
-                    <h1>Select a project</h1>
+                    <div className="selectProjectContainer">
+                        <h1>Select or create a new project</h1>
+                    </div>
                 ) : (
                     <div>
                         <h1>{selectedProject}</h1>
                         {/* LIST OUT TO DO TASKS */}
                         <h3>To Do</h3>
-                        {tasks.map((task) => {
-                            if (task.completed === false) {
-                                return (
-                                    <div className="taskDiv">
-                                        {/* TASK */}
-                                        <div className="taskTitle">
-                                            <p
-                                                id={task.task}
-                                                onClick={(e) => {
-                                                    setToggleTaskInfo(e.target.id);
-                                                }}
-                                            >
-                                                {task.task}
-                                            </p>
-                                            {toggleTaskInfo === task.task ? <p>&#x2212;</p> : <p>&#x2b;</p>}
-                                        </div>
-                                        {toggleTaskInfo === task.task ? (
-                                            <div className="taskInfo">
-                                                {/* TASK INFO - UPDATE/COMPLETE/REMOVE */}
-                                                <div className="taskInputDiv">
-                                                    <input
-                                                        className="taskUpdateInput"
-                                                        type="text"
-                                                        placeholder="Edit current task"
-                                                        id="updatedTask"
-                                                        onChange={(e) => {
-                                                            setNewUpdatedTask(e.target.value);
-                                                        }}
-                                                    />
-                                                    <div className="button updateButton" onClick={updateTask} id={task.id}>
-                                                        Update Task
-                                                    </div>
-                                                </div>
-                                                {/* MARK TASK AS COMPLETED */}
-                                                <div className="button completedButton" onClick={completeTask} id={task.id}>
-                                                    Completed
-                                                </div>
-                                                {/* DELETE TASK */}
-                                                <div
-                                                    className="button removeButton"
-                                                    onClick={() => {
-                                                        deleteTask(task.id);
+                        {tasks
+                            .sort((a, b) => (a.task_created > b.task_created ? 1 : -1))
+                            .map((task) => {
+                                if (task.completed === false) {
+                                    return (
+                                        <div className="taskDiv">
+                                            {/* TASK */}
+                                            <div className="taskTitle">
+                                                <p
+                                                    id={task.task}
+                                                    onClick={(e) => {
+                                                        setToggleTaskInfo(e.target.id);
                                                     }}
                                                 >
-                                                    Remove
+                                                    {task.task}
+                                                </p>
+                                                <div className="taskGlanceDiv">
+                                                    <div className={task.priority === "Low" ? "taskGlancePriorityLow" : task.priority === "Medium" ? "taskGlancePriorityMedium" : task.priority === "High" ? "taskGlancePriorityHigh" : null}> </div>
+                                                    <p className="taskGlanceType">{task.type}</p>
+
+                                                    {toggleTaskInfo === task.task ? <p>&#x2212;</p> : <p>&#x2b;</p>}
                                                 </div>
                                             </div>
-                                        ) : null}
-                                    </div>
-                                );
-                            }
-                        })}
+                                            {toggleTaskInfo === task.task ? (
+                                                <div className="taskInfo">
+                                                    {/* TASK INFO - UPDATE/COMPLETE/REMOVE */}
+                                                    <div className="taskInputDiv">
+                                                        <input
+                                                            className="taskUpdateInput"
+                                                            type="text"
+                                                            placeholder="Edit current task"
+                                                            id="updatedTask"
+                                                            onChange={(e) => {
+                                                                setNewUpdatedTask(e.target.value);
+                                                            }}
+                                                        />
+                                                        <div className="button updateButton" onClick={updateTask} id={task.id}>
+                                                            Update Task
+                                                        </div>
+                                                    </div>
+                                                    {/* MARK TASK AS COMPLETED */}
+                                                    <div className="button completedButton" onClick={completeTask} id={task.id}>
+                                                        Completed
+                                                    </div>
+                                                    {/* DELETE TASK */}
+                                                    <div
+                                                        className="button removeButton"
+                                                        onClick={() => {
+                                                            deleteTask(task.id);
+                                                        }}
+                                                    >
+                                                        Remove
+                                                    </div>
+                                                </div>
+                                            ) : null}
+                                        </div>
+                                    );
+                                }
+                            })}
                         {/* ADD TASK */}
                         <div className="addTaskContainer">
                             <div
@@ -239,6 +259,33 @@ function App() {
                                             setNewTask(e.target.value);
                                         }}
                                     />
+                                    <select
+                                        className="dropdown"
+                                        onChange={(e) => {
+                                            setNewTaskPriority(e.target.value);
+                                        }}
+                                    >
+                                        <option disabled selected value>
+                                            Priority
+                                        </option>
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High">High</option>
+                                    </select>
+                                    <select
+                                        className="dropdown"
+                                        onChange={(e) => {
+                                            setNewTaskType(e.target.value);
+                                        }}
+                                    >
+                                        <option disabled selected value>
+                                            Type
+                                        </option>
+                                        <option value="Task">Task</option>
+                                        <option value="Bug">Bug</option>
+                                        <option value="Feature">Feature</option>
+                                    </select>
+
                                     <div className="expandedAddTaskButton" onClick={createTask}>
                                         Add Task
                                     </div>
@@ -246,7 +293,7 @@ function App() {
                             ) : null}
                         </div>
 
-                        <h1>Completed</h1>
+                        <h3>Completed</h3>
                         {tasks.map((task) => {
                             if (task.completed === true) {
                                 return (

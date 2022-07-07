@@ -6,6 +6,7 @@
 
 body {
     color: #fff;
+    background-color: #f6f7f9;
 }
 
 .sidebar {
@@ -51,7 +52,6 @@ h3 {
 
 .pageContent {
     margin-left: 25%;
-    height: 100vh;
     background-color: #f6f7f9;
     color: #1b3a57;
     padding-top: 3%;
@@ -61,6 +61,19 @@ h3 {
 
 .pageContent h1 {
     padding-bottom: 15px;
+}
+
+.selectProjectContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.selectProjectContainer h1 {
+    font-size: 3em;
 }
 
 .tasks {
@@ -108,10 +121,11 @@ h3 {
 }
 
 .addProjectButton {
-    padding: 7px;
+    padding: 10px;
+
     background-color: #051e3470;
     width: 180px;
-    border-radius: 10px;
+    border-radius: 15px;
     color: #fff;
     font-weight: bold;
     display: inline-block;
@@ -135,7 +149,6 @@ h3 {
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
-    margin-right: 15px;
     box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
@@ -221,4 +234,94 @@ h3 {
 .completedTaskDelete {
     height: 14px;
     cursor: pointer;
+}
+
+.addProjectInput {
+    padding: 10px;
+    border-radius: 15px;
+    margin-right: 5px;
+    width: 150px;
+    border-style: solid;
+    border-color: #1b3a572e;
+    border-width: 1px;
+    border-radius: 15px;
+}
+
+.addProjectInput:focus {
+    outline: none !important;
+    border: 1px solid #1b3a572e;
+    box-shadow: 0 0 3px #1b3a5762;
+}
+
+.expandedAddProjectContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.expandedAddProjectButton {
+    padding: 10px;
+    background-color: #051e3470;
+    border-radius: 15px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.expandedAddProjectButton:hover {
+    cursor: pointer;
+    background-color: #051e34a8;
+}
+
+.taskGlanceDiv {
+    display: flex;
+    width: 140px;
+    justify-content: space-between;
+}
+
+.taskGlanceType {
+    background-color: #003851bd;
+    color: #fff;
+    padding: 1px 7px 1px 7px;
+    border-radius: 10px;
+    border: 1px solid #1b3a572e;
+    box-shadow: 0 0 3px #1b3a5762;
+}
+
+.taskGlancePriorityLow {
+    background-color: #16bf50a6;
+    color: #fff;
+    border-radius: 50%;
+    padding: 11px;
+    border: 1px solid #1b3a572e;
+    box-shadow: 0 0 3px #1b3a5762;
+}
+
+.taskGlancePriorityMedium {
+    background-color: #babf16a6;
+    color: #fff;
+    border-radius: 50%;
+    padding: 11px;
+    border: 1px solid #1b3a572e;
+    box-shadow: 0 0 3px #1b3a5762;
+}
+
+.taskGlancePriorityHigh {
+    background-color: #bf1616a6;
+    color: #fff;
+    border-radius: 50%;
+    padding: 11px;
+    border: 1px solid #1b3a572e;
+    box-shadow: 0 0 3px #1b3a5762;
+}
+
+.dropdown {
+    padding: 10px;
+    border-radius: 15px;
+    margin-right: 5px;
+    width: 100px;
+    border-style: solid;
+    border-color: #1b3a572e;
+    border-width: 1px;
+    border-radius: 15px;
+    background-color: #fff;
 }
