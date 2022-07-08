@@ -14,6 +14,7 @@ function App() {
     const [tasks, setTasks] = useState([]);
     const [toggleTaskInfo, setToggleTaskInfo] = useState([]);
     const [toggleAddTask, setToggleAddTask] = useState(false);
+    const [toggleState, setToggleState] = useState(false);
     const [newTask, setNewTask] = useState("");
     const [newTaskType, setNewTaskType] = useState("");
     const [newTaskPriority, setNewTaskPriority] = useState("");
@@ -28,6 +29,7 @@ function App() {
     useEffect(() => {
         const getTasks = async () => {
             const data = await getDocs(tasksCollectionRef);
+
             const allTasks = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
             console.log(allTasks);
             /* Filters tasks by the selected project */
@@ -127,6 +129,7 @@ function App() {
                                 className={selectedProject === project.project ? "selectedSidebarProject" : "projectList"}
                                 onClick={() => {
                                     setSelectedProject(project.project);
+                                    setToggleAddTask(false);
                                 }}
                             >
                                 <p>{project.project}</p>
@@ -188,9 +191,11 @@ function App() {
                                             {/* TASK */}
                                             <div className="taskTitle">
                                                 <p
+                                                    className="taskToggle"
                                                     id={task.task}
                                                     onClick={(e) => {
                                                         setToggleTaskInfo(e.target.id);
+                                                        setToggleState(!toggleState);
                                                     }}
                                                 >
                                                     {task.task}
@@ -199,10 +204,10 @@ function App() {
                                                     <div className={task.priority === "Low" ? "taskGlancePriorityLow" : task.priority === "Medium" ? "taskGlancePriorityMedium" : task.priority === "High" ? "taskGlancePriorityHigh" : null}> </div>
                                                     <p className="taskGlanceType">{task.type}</p>
 
-                                                    {toggleTaskInfo === task.task ? <p>&#x2212;</p> : <p>&#x2b;</p>}
+                                                    {(toggleTaskInfo === task.task) & (toggleState === true) ? <p>&#x2212;</p> : <p>&#x2b;</p>}
                                                 </div>
                                             </div>
-                                            {toggleTaskInfo === task.task ? (
+                                            {(toggleTaskInfo === task.task) & (toggleState === true) ? (
                                                 <div className="taskInfo">
                                                     {/* TASK INFO - UPDATE/COMPLETE/REMOVE */}
                                                     <div className="taskInputDiv">
@@ -294,25 +299,27 @@ function App() {
                         </div>
 
                         <h3>Completed</h3>
-                        {tasks.map((task) => {
-                            if (task.completed === true) {
-                                return (
-                                    <div className="completedTasks">
-                                        <p>{task.task}</p>
-                                        <div>
-                                            <img
-                                                alt="#"
-                                                src={trashIcon}
-                                                className="completedTaskDelete"
-                                                onClick={() => {
-                                                    deleteTask(task.id);
-                                                }}
-                                            />
+                        {tasks
+                            .sort((a, b) => (a.date_completed > b.date_completed ? -1 : 1))
+                            .map((task) => {
+                                if (task.completed === true) {
+                                    return (
+                                        <div className="completedTasks">
+                                            <p>{task.task}</p>
+                                            <div>
+                                                <img
+                                                    alt="#"
+                                                    src={trashIcon}
+                                                    className="completedTaskDelete"
+                                                    onClick={() => {
+                                                        deleteTask(task.id);
+                                                    }}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
-                                );
-                            }
-                        })}
+                                    );
+                                }
+                            })}
                     </div>
                 )}
             </div>

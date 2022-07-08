@@ -7,6 +7,11 @@
 body {
     color: #fff;
     background-color: #f6f7f9;
+    user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .sidebar {
@@ -86,12 +91,15 @@ h3 {
 .taskDiv {
     justify-content: space-between;
     margin-bottom: 20px;
-    cursor: pointer;
     background-color: #eaeaea;
     color: #1b3a57;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.taskToggle {
+    cursor: pointer;
 }
 
 .taskName {
@@ -101,7 +109,7 @@ h3 {
 .taskInfo {
     display: flex;
     background-color: #f6f7f9;
-    padding: 20px 5px 20px 5px;
+    padding: 15px 5px 15px 5px;
     margin-top: 10px;
     border-radius: 10px;
     justify-content: space-around;
@@ -162,7 +170,7 @@ h3 {
 }
 
 .button {
-    padding: 10px;
+    padding: 2px 7px 2px 7px;
     cursor: pointer;
     border-radius: 15px;
     font-weight: bold;
@@ -188,7 +196,7 @@ h3 {
 }
 
 .taskUpdateInput {
-    padding: 10px;
+    padding: 3px 3px 3px 10px;
     border-radius: 15px;
     margin-right: 5px;
     width: 200px;
