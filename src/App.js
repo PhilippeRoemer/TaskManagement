@@ -74,12 +74,16 @@ function App() {
 
     /* CREATE TASK */
     const createTask = async () => {
-        await addDoc(tasksCollectionRef, { task: newTask, project: selectedProject, completed: false, task_created: Timestamp.now(), type: newTaskType, priority: newTaskPriority });
-        document.getElementById("newTask").value = "";
-        setToggleAddTask(false);
-        setNewTaskPriority("");
-        setNewTaskType("");
-        setUpdateList(!updateList);
+        if (newTaskPriority === "" || newTaskType === "" || newTask === "") {
+            alert("Please enter all fields to create a new task");
+        } else {
+            await addDoc(tasksCollectionRef, { task: newTask, project: selectedProject, completed: false, task_created: Timestamp.now(), type: newTaskType, priority: newTaskPriority });
+            setNewTask("");
+            setToggleAddTask(false);
+            setNewTaskPriority("");
+            setNewTaskType("");
+            setUpdateList(!updateList);
+        }
     };
 
     /* UPDATE TASK */
