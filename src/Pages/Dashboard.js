@@ -4,12 +4,16 @@ import { db } from "../firebase-config";
 import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc, Timestamp } from "firebase/firestore";
 import trashIcon from "../images/trash_icon.png";
 import sidebarImage from "../images/sidebar_background.png";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase-config";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 function Dashboard() {
     const [projects, setProjects] = useState([]);
     const [toggleAddProject, setToggleAddProject] = useState(false);
     const [newProject, setNewProject] = useState("blank");
-    const [selectedProject, setSelectedProject] = useState([]);
+    const [selectedProjectID, setSelectedProjectID] = useState([]);
+    const [selectedProjectName, setSelectedProjectName] = useState("");
 
     const [tasks, setTasks] = useState([]);
     const [toggleTaskInfo, setToggleTaskInfo] = useState([]);
@@ -22,37 +26,54 @@ function Dashboard() {
 
     const [updateList, setUpdateList] = useState(false);
 
-    const tasksCollectionRef = collection(db, "tasks");
-    const projectsCollectionRef = collection(db, "projects");
+    const [user, setUser] = useState({});
+
+    let navigate = useNavigate();
+
+    const logout = async () => {
+        await signOut(auth);
+        navigate("/login");
+    };
 
     /* GET TASKS AFTER THE PROJECT IS SELECTED*/
     useEffect(() => {
         const getTasks = async () => {
-            const data = await getDocs(tasksCollectionRef);
-
+            const data = await getDocs(collection(db, "users", user.uid, "projects", selectedProjectID, "tasks"));
+            console.log(data.docs);
             const allTasks = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
             console.log(allTasks);
             /* Filters tasks by the selected project */
-            const filteredProject = allTasks.filter((id) => id.project === selectedProject);
+            const filteredProject = allTasks.filter((id) => id.project === selectedProjectID);
             console.log(filteredProject);
             setTasks(filteredProject);
         };
         getTasks();
-    }, [selectedProject, updateList]);
+    }, [selectedProjectID, updateList]);
 
     /* GET PROJECTS */
     useEffect(() => {
-        const getProjects = async () => {
-            const data = await getDocs(projectsCollectionRef);
-            setProjects(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-        };
+        onAuthStateChanged(auth, (currentUser) => {
+            if (currentUser) {
+                const usersCollectionRef2 = collection(db, "users", currentUser.uid, "projects");
+                console.log("yes");
+                setUser(currentUser);
+                console.log(currentUser.uid);
+                const getProjects = async () => {
+                    const data = await getDocs(usersCollectionRef2);
+                    console.log(data.docs);
+                    setProjects(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+                };
 
-        getProjects();
+                getProjects();
+            } else {
+                console.log("no");
+            }
+        });
     }, [updateList]);
 
     /* CREATE PROJECT */
     const createProject = async () => {
-        await addDoc(projectsCollectionRef, {
+        await addDoc(collection(db, "users", user.uid, "projects"), {
             project: newProject,
             project_created: Timestamp.now(),
         });
@@ -64,20 +85,22 @@ function Dashboard() {
 
     /* DELETE PROJECT */
     const deleteProject = async (id) => {
-        const taskDoc = doc(db, "projects", id);
+        const taskDoc = doc(db, "users", user.uid, "projects", id);
         if (window.confirm("Are you sure you want to delete this project?")) {
             await deleteDoc(taskDoc);
         }
-
+        setSelectedProjectID("");
         setUpdateList(!updateList);
     };
 
     /* CREATE TASK */
     const createTask = async () => {
+        const tasksCollectionRef2 = collection(db, "users", user.uid, "projects", selectedProjectID, "tasks");
         if (newTaskPriority === "" || newTaskType === "" || newTask === "") {
             alert("Please enter all fields to create a new task");
         } else {
-            await addDoc(tasksCollectionRef, { task: newTask, project: selectedProject, completed: false, task_created: Timestamp.now(), type: newTaskType, priority: newTaskPriority });
+            await addDoc(tasksCollectionRef2, { task: newTask, project: selectedProjectID, completed: false, task_created: Timestamp.now(), type: newTaskType, priority: newTaskPriority });
+            /* document.getElementById("newTask").value = ""; */
             setNewTask("");
             setToggleAddTask(false);
             setNewTaskPriority("");
@@ -89,7 +112,7 @@ function Dashboard() {
     /* UPDATE TASK */
     const updateTask = async (e) => {
         const taskID = e.target.id;
-        const taskDoc = doc(db, "tasks", taskID);
+        const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID, "tasks", taskID);
         const newFields = { task: newUpdatedTask };
 
         if (newUpdatedTask === "") {
@@ -104,7 +127,7 @@ function Dashboard() {
 
     /* DELETE TASK */
     const deleteTask = async (id) => {
-        const taskDoc = doc(db, "tasks", id);
+        const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID, "tasks", id);
         await deleteDoc(taskDoc);
         setUpdateList(!updateList);
     };
@@ -112,7 +135,7 @@ function Dashboard() {
     /* COMPLETE TASK */
     const completeTask = async (e) => {
         const taskID = e.target.id;
-        const taskDoc = doc(db, "tasks", taskID);
+        const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID, "tasks", taskID);
         const newFields = { completed: true, date_completed: Timestamp.now() };
 
         await updateDoc(taskDoc, newFields);
@@ -130,9 +153,10 @@ function Dashboard() {
                     .map((project) => {
                         return (
                             <div
-                                className={selectedProject === project.project ? "selectedSidebarProject" : "projectList"}
+                                className={selectedProjectID === project.id ? "selectedSidebarProject" : "projectList"}
                                 onClick={() => {
-                                    setSelectedProject(project.project);
+                                    setSelectedProjectID(project.id);
+                                    setSelectedProjectName(project.project);
                                     setToggleAddTask(false);
                                 }}
                             >
@@ -177,13 +201,17 @@ function Dashboard() {
             </div>
             {/* PAGE CONTENT/PROJECT TASKS */}
             <div className="pageContent">
-                {selectedProject == "" ? (
+                {selectedProjectID == "" ? (
                     <div className="selectProjectContainer">
                         <h1>Select or create a new project</h1>
                     </div>
                 ) : (
                     <div>
-                        <h1>{selectedProject}</h1>
+                        <p>User Logged In: {user ? user.email : "Not Logged In"}</p>
+                        <div className="signoutButton" onClick={logout}>
+                            Signout
+                        </div>
+                        <h1>{selectedProjectName}</h1>
                         {/* LIST OUT TO DO TASKS */}
                         <h3>To Do</h3>
                         {tasks
