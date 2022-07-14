@@ -1,24 +1,123 @@
-import React from "react";
+/* import React from "react"; */
+import { useState, useEffect } from "react";
 import "../App.css";
 import { useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { auth } from "../firebase-config";
 
 function Login() {
+    const [registerEmail, setRegisteredEmail] = useState("");
+    const [registerPassword, setRegisteredPassword] = useState("");
+    const [loginEmail, setLoginEmail] = useState("");
+    const [loginPassword, setLoginPassword] = useState("");
+
+    const [toggleLogin, setToggleLogin] = useState(false);
+
+    const [user, setUser] = useState({});
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+        });
+    }, []);
+
     let navigate = useNavigate();
+
+    const register = async () => {
+        try {
+            const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
+            console.log(user);
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    const login = async () => {
+        try {
+            const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+            console.log(user);
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    const logout = async () => {
+        await signOut(auth);
+    };
+
     return (
         <div className="loginContainer">
             <div className="loginDiv">
                 <h1>Task Manager</h1>
-
-                <input className="loginInput" type="text" placeholder="Username" id="newTask" />
-
-                <input className="loginInput" type="password" placeholder="Password" id="newTask" />
+                {!toggleLogin ? (
+                    <div>
+                        <h3 className="loginSubTitle">Login</h3>
+                        <div>
+                            <input
+                                className="loginInput"
+                                type="text"
+                                placeholder="Email"
+                                onChange={(e) => {
+                                    setLoginEmail(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <input
+                                className="loginInput"
+                                type="password"
+                                placeholder="Password"
+                                onChange={(e) => {
+                                    setLoginPassword(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div className="button loginButton" onClick={login}>
+                            Login
+                        </div>
+                    </div>
+                ) : (
+                    <div>
+                        <h3 className="loginSubTitle">Create Account</h3>
+                        <div>
+                            <input
+                                className="loginInput"
+                                type="text"
+                                placeholder="Email"
+                                onChange={(e) => {
+                                    setRegisteredEmail(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <input
+                                className="loginInput"
+                                type="password"
+                                placeholder="Password"
+                                onChange={(e) => {
+                                    setRegisteredPassword(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div className="button loginButton" onClick={register}>
+                            Create Account
+                        </div>
+                    </div>
+                )}
                 <div
-                    className="button loginButton"
                     onClick={() => {
-                        navigate("/dashboard");
+                        setToggleLogin(!toggleLogin);
                     }}
                 >
-                    Login
+                    {!toggleLogin ? (
+                        <p className="createAccountToggle">
+                            <u>Click here to create an account</u>
+                        </p>
+                    ) : (
+                        <p className="createAccountToggle">
+                            <u>Click here to Login</u>
+                        </p>
+                    )}
                 </div>
             </div>
         </div>

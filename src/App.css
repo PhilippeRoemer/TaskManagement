@@ -31,6 +31,11 @@ h3 {
     padding-bottom: 15px;
 }
 
+.projectTitle {
+    text-align: center;
+    margin-top: 3%;
+}
+
 .projectList {
     display: flex;
     justify-content: center;
@@ -62,7 +67,7 @@ h3 {
     margin-left: 25%;
     background-color: #f6f7f9;
     color: #1b3a57;
-    padding-top: 3%;
+    padding-top: 1%;
     padding-left: 5%;
     padding-right: 5%;
 }
@@ -129,6 +134,10 @@ h3 {
     color: #fff;
     margin-bottom: 15px;
     font-weight: bold;
+}
+
+.addTaskButton:hover {
+    background-color: #043242;
 }
 
 .addProjectButton {
@@ -351,4 +360,85 @@ h3 {
     border-style: solid;
     border-width: 1px;
     border-color: #fff;
+}
+
+.loginContainer {
+    background: url("./images/sidebar_background.png");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.loginDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.loginInput {
+    padding: 10px;
+    border-radius: 15px;
+    border-style: solid;
+    border-color: #1b3a572e;
+    border-width: 1px;
+    border-radius: 15px;
+    margin-top: 15px;
+    width: 220px;
+}
+
+.loginInput:focus {
+    outline: none !important;
+    border: 1px solid #1b3a572e;
+    box-shadow: 0 0 3px #1b3a5762;
+}
+
+.loginButton {
+    padding: 10px;
+    background-color: #051e3470;
+    margin-top: 15px;
+    width: 220px;
+}
+
+.loginButton:hover {
+    background-color: #051e34a8;
+}
+
+.userDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.signoutButton {
+    background-color: #054257;
+    color: #fff;
+    padding: 1px 7px 1px 7px;
+    border-radius: 10px;
+    border: 1px solid #1b3a572e;
+    box-shadow: 0 0 3px #1b3a5762;
+}
+
+.signoutButton:hover {
+    cursor: pointer;
+    background-color: #043242;
+}
+
+.loginSubTitle {
+    padding-bottom: 0px;
+    margin-top: 15px;
+}
+
+.createAccountToggle {
+    margin-top: 25%;
+}
+
+.createAccountToggle:hover {
+    cursor: pointer;
 }
