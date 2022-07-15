@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/TaskManagement-Firebase/static/css/main.6293147a.css",
-    "main.js": "/TaskManagement-Firebase/static/js/main.8c86b235.js",
-    "static/media/sidebar_background.png": "/TaskManagement-Firebase/static/media/sidebar_background.0adb88067447f51cbe92.png",
-    "static/media/trash_icon.png": "/TaskManagement-Firebase/static/media/trash_icon.61e22baa50a615fa98ad.png",
-    "index.html": "/TaskManagement-Firebase/index.html",
-    "main.6293147a.css.map": "/TaskManagement-Firebase/static/css/main.6293147a.css.map",
-    "main.8c86b235.js.map": "/TaskManagement-Firebase/static/js/main.8c86b235.js.map"
+    "main.css": "/TaskManagement/static/css/main.9581f73c.css",
+    "main.js": "/TaskManagement/static/js/main.1d3023f4.js",
+    "static/media/sidebar_background.png": "/TaskManagement/static/media/sidebar_background.0adb88067447f51cbe92.png",
+    "static/media/trash_icon.png": "/TaskManagement/static/media/trash_icon.61e22baa50a615fa98ad.png",
+    "index.html": "/TaskManagement/index.html",
+    "main.9581f73c.css.map": "/TaskManagement/static/css/main.9581f73c.css.map",
+    "main.1d3023f4.js.map": "/TaskManagement/static/js/main.1d3023f4.js.map"
   },
   "entrypoints": [
-    "static/css/main.6293147a.css",
-    "static/js/main.8c86b235.js"
+    "static/css/main.9581f73c.css",
+    "static/js/main.1d3023f4.js"
   ]
 }
