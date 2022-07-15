@@ -55,7 +55,6 @@ function Dashboard() {
         onAuthStateChanged(auth, (currentUser) => {
             if (currentUser) {
                 const usersCollectionRef2 = collection(db, "users", currentUser.uid, "projects");
-                console.log("yes");
                 setUser(currentUser);
                 console.log(currentUser.uid);
                 const getProjects = async () => {
@@ -66,7 +65,7 @@ function Dashboard() {
 
                 getProjects();
             } else {
-                console.log("no");
+                navigate("/login");
             }
         });
     }, [updateList]);
@@ -100,7 +99,6 @@ function Dashboard() {
             alert("Please enter all fields to create a new task");
         } else {
             await addDoc(tasksCollectionRef2, { task: newTask, project: selectedProjectID, completed: false, task_created: Timestamp.now(), type: newTaskType, priority: newTaskPriority });
-            /* document.getElementById("newTask").value = ""; */
             setNewTask("");
             setToggleAddTask(false);
             setNewTaskPriority("");
@@ -201,17 +199,21 @@ function Dashboard() {
             </div>
             {/* PAGE CONTENT/PROJECT TASKS */}
             <div className="pageContent">
+                <div className="userDiv">
+                    <p>
+                        <b>User Logged In:</b> {user ? user.email : "Not Logged In"}
+                    </p>
+                    <div className="signoutButton" onClick={logout}>
+                        Signout
+                    </div>
+                </div>
                 {selectedProjectID == "" ? (
                     <div className="selectProjectContainer">
                         <h1>Select or create a new project</h1>
                     </div>
                 ) : (
                     <div>
-                        <p>User Logged In: {user ? user.email : "Not Logged In"}</p>
-                        <div className="signoutButton" onClick={logout}>
-                            Signout
-                        </div>
-                        <h1>{selectedProjectName}</h1>
+                        <h1 className="projectTitle">{selectedProjectName}</h1>
                         {/* LIST OUT TO DO TASKS */}
                         <h3>To Do</h3>
                         {tasks

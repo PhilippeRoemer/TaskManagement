@@ -1,4 +1,3 @@
-/* import React from "react"; */
 import { useState, useEffect } from "react";
 import "../App.css";
 import { useNavigate } from "react-router-dom";
@@ -27,8 +26,18 @@ function Login() {
         try {
             const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
             console.log(user);
+            navigate("/dashboard");
         } catch (error) {
             console.log(error.message);
+            if (error.message === "Firebase: Password should be at least 6 characters (auth/weak-password).") {
+                alert("Password should be at least 6 characters");
+            } else if (error.message === "Firebase: Error (auth/invalid-email).") {
+                alert("Please enter an email");
+            } else if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+                alert("The email you entered is already in use");
+            } else {
+                alert("Please enter an email and password to create an account");
+            }
         }
     };
 
@@ -36,8 +45,11 @@ function Login() {
         try {
             const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
             console.log(user);
+            console.log("You're in!");
+            navigate("/dashboard");
         } catch (error) {
             console.log(error.message);
+            alert("Incorrect email or password");
         }
     };
 
