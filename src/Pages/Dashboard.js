@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../App.css";
 import { db } from "../firebase-config";
-import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc, Timestamp } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc, Timestamp, Firestore } from "firebase/firestore";
 import trashIcon from "../images/trash_icon.png";
 import sidebarImage from "../images/sidebar_background.png";
 import { useNavigate } from "react-router-dom";
@@ -83,13 +83,13 @@ function Dashboard() {
     };
 
     /* DELETE PROJECT */
-    const deleteProject = async (id) => {
-        const taskDoc = doc(db, "users", user.uid, "projects", id);
-        if (window.confirm("Are you sure you want to delete this project?")) {
+    const deleteProject = async () => {
+        const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID);
+        if (window.confirm("You are about to delete: " + selectedProjectName + "\n\nAre you sure you want to delete this project?")) {
             await deleteDoc(taskDoc);
+            setSelectedProjectID("");
+            setUpdateList(!updateList);
         }
-        setSelectedProjectID("");
-        setUpdateList(!updateList);
     };
 
     /* CREATE TASK */
@@ -159,15 +159,6 @@ function Dashboard() {
                                 }}
                             >
                                 <p>{project.project}</p>
-                                {/* DELETE PROJECT */}
-                                <img
-                                    alt="#"
-                                    src={trashIcon}
-                                    className="projectDelete"
-                                    onClick={() => {
-                                        deleteProject(project.id);
-                                    }}
-                                />
                             </div>
                         );
                     })}
@@ -243,7 +234,7 @@ function Dashboard() {
                                             </div>
                                             {(toggleTaskInfo === task.task) & (toggleState === true) ? (
                                                 <div className="taskInfo">
-                                                    {/* TASK INFO - UPDATE/COMPLETE/REMOVE */}
+                                                    {/* EXPANDED TASK INFO - UPDATE/COMPLETE/REMOVE */}
                                                     <div className="taskInputDiv">
                                                         <input
                                                             className="taskUpdateInput"
@@ -288,6 +279,7 @@ function Dashboard() {
                                 {!toggleAddTask ? <p>+ Add a new task</p> : <p>- Add a new task</p>}
                             </div>
                             {toggleAddTask ? (
+                                /* EXPANDED ADD TASK */
                                 <div className="expandedAddTaskContainer">
                                     <input
                                         className="addTaskInput"
@@ -354,6 +346,11 @@ function Dashboard() {
                                     );
                                 }
                             })}
+                        <div className="deleteProject">
+                            <div onClick={deleteProject} className="deleteProjectButton">
+                                Delete Project
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>

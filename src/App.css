@@ -442,3 +442,24 @@ h3 {
 .createAccountToggle:hover {
     cursor: pointer;
 }
+
+.deleteProject {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.deleteProjectButton {
+    cursor: pointer;
+    padding: 5px;
+    background-color: #b04848;
+    color: #fff;
+    border-radius: 10px;
+    border: 1px solid #1b3a572e;
+    font-weight: bold;
+    font-size: small;
+    margin-bottom: 25px;
+}
+
+.deleteProjectButton:hover {
+    background-color: #923c3c;
+}
