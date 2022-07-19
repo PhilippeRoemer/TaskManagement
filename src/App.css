@@ -196,14 +196,26 @@ h3 {
     color: #f6f7f9;
 }
 
+.updateButton:hover {
+    background-color: #043342;
+}
+
 .completedButton {
     background-color: #367b6d;
     color: #f6f7f9;
 }
 
+.completedButton:hover {
+    background-color: #2a5f54;
+}
+
 .removeButton {
     background-color: #b04848;
     color: #f6f7f9;
+}
+
+.removeButton:hover {
+    background-color: #883838;
 }
 
 .taskInputDiv {
