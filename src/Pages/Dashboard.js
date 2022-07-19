@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../App.css";
 import { db } from "../firebase-config";
-import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc, Timestamp, Firestore } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc, Timestamp, Firestore, increment } from "firebase/firestore";
 import trashIcon from "../images/trash_icon.png";
 import sidebarImage from "../images/sidebar_background.png";
 import { useNavigate } from "react-router-dom";
@@ -99,6 +99,11 @@ function Dashboard() {
             alert("Please enter all fields to create a new task");
         } else {
             await addDoc(tasksCollectionRef2, { task: newTask, project: selectedProjectID, completed: false, task_created: Timestamp.now(), type: newTaskType, priority: newTaskPriority });
+
+            const projectDoc = doc(db, "users", user.uid, "projects", selectedProjectID);
+            const taskStatusUpdate = { tasks_completed: increment(0), tasks_open: increment(1) };
+            await updateDoc(projectDoc, taskStatusUpdate);
+
             setNewTask("");
             setToggleAddTask(false);
             setNewTaskPriority("");
@@ -127,15 +132,35 @@ function Dashboard() {
     const deleteTask = async (id) => {
         const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID, "tasks", id);
         await deleteDoc(taskDoc);
+
+        const projectDoc = doc(db, "users", user.uid, "projects", selectedProjectID);
+        const taskStatusUpdate = { tasks_open: increment(-1) };
+        await updateDoc(projectDoc, taskStatusUpdate);
+
         setUpdateList(!updateList);
     };
 
-    /* COMPLETE TASK */
+    /* DELETE COMPLETED TASK */
+    const deleteCompletedTask = async (id) => {
+        const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID, "tasks", id);
+        await deleteDoc(taskDoc);
+
+        const projectDoc = doc(db, "users", user.uid, "projects", selectedProjectID);
+        const taskStatusUpdate = { tasks_completed: increment(-1) };
+        await updateDoc(projectDoc, taskStatusUpdate);
+
+        setUpdateList(!updateList);
+    };
+
     const completeTask = async (e) => {
         const taskID = e.target.id;
         const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID, "tasks", taskID);
         const newFields = { completed: true, date_completed: Timestamp.now() };
 
+        const projectDoc = doc(db, "users", user.uid, "projects", selectedProjectID);
+        const newFields2 = { tasks_completed: increment(1), tasks_open: increment(-1) };
+
+        await updateDoc(projectDoc, newFields2);
         await updateDoc(taskDoc, newFields);
         setUpdateList(!updateList);
     };
@@ -171,7 +196,9 @@ function Dashboard() {
                                     setToggleAddTask(false);
                                 }}
                             >
-                                <p>{project.project}</p>
+                                <p>
+                                    {project.project} {project.tasks_open > 0 ? <span className="tasksOpen">{project.tasks_open}</span> : null}
+                                </p>
                             </div>
                         );
                     })}
@@ -340,7 +367,7 @@ function Dashboard() {
                                                     src={trashIcon}
                                                     className="completedTaskDelete"
                                                     onClick={() => {
-                                                        deleteTask(task.id);
+                                                        deleteCompletedTask(task.id);
                                                     }}
                                                 />
                                             </div>

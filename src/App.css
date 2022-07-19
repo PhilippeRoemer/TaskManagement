@@ -506,3 +506,10 @@ h3 {
     box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
     cursor: default;
 }
+
+.tasksOpen {
+    background-color: #ff00009e;
+    padding: 2px 6px 2px 6px;
+    border-radius: 50%;
+    font-size: 0.8em;
+}
