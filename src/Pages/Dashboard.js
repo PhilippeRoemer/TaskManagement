@@ -15,10 +15,10 @@ function Dashboard() {
     const [selectedProjectID, setSelectedProjectID] = useState([]);
     const [selectedProjectName, setSelectedProjectName] = useState("");
 
+    const [selectedTask, setSelectedTask] = useState(null);
+
     const [tasks, setTasks] = useState([]);
-    const [toggleTaskInfo, setToggleTaskInfo] = useState([]);
     const [toggleAddTask, setToggleAddTask] = useState(false);
-    const [toggleState, setToggleState] = useState(false);
     const [newTask, setNewTask] = useState("");
     const [newTaskType, setNewTaskType] = useState("");
     const [newTaskPriority, setNewTaskPriority] = useState("");
@@ -140,12 +140,25 @@ function Dashboard() {
         setUpdateList(!updateList);
     };
 
+    /* TOGGLE SECLECTED TASK */
+    const toggleTask = (i) => {
+        if (selectedTask === i) {
+            return setSelectedTask(null);
+        }
+        console.log(selectedTask);
+        setSelectedTask(i);
+    };
+
+    /* DISABLE TASK INFO TOGGLING*/
+    const disableToggling = (e) => {
+        e.stopPropagation();
+    };
+
     return (
         <div>
             {/* SIDEBAR/ADD NEW PROJECT */}
             <div className="sidebar" style={{ backgroundImage: `url(${sidebarImage})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
                 <h1>Projects</h1>
-
                 {projects
                     .sort((a, b) => (a.project_created > b.project_created ? 1 : -1))
                     .map((project) => {
@@ -209,61 +222,50 @@ function Dashboard() {
                         <h3>To Do</h3>
                         {tasks
                             .sort((a, b) => (a.task_created > b.task_created ? 1 : -1))
-                            .map((task) => {
+                            .map((task, i) => {
                                 if (task.completed === false) {
                                     return (
-                                        <div className="taskDiv">
+                                        <div className="taskDiv" onClick={() => toggleTask(i)}>
                                             {/* TASK */}
                                             <div className="taskTitle">
-                                                <p
-                                                    className="taskToggle"
-                                                    id={task.task}
-                                                    onClick={(e) => {
-                                                        setToggleTaskInfo(e.target.id);
-                                                        setToggleState(!toggleState);
-                                                    }}
-                                                >
-                                                    {task.task}
-                                                </p>
+                                                <p id={task.task}>{task.task}</p>
                                                 <div className="taskGlanceDiv">
                                                     <div className={task.priority === "Low" ? "taskGlancePriorityLow" : task.priority === "Medium" ? "taskGlancePriorityMedium" : task.priority === "High" ? "taskGlancePriorityHigh" : null}> </div>
                                                     <p className="taskGlanceType">{task.type}</p>
 
-                                                    {(toggleTaskInfo === task.task) & (toggleState === true) ? <p>&#x2212;</p> : <p>&#x2b;</p>}
+                                                    {selectedTask === i ? "-" : "+"}
                                                 </div>
                                             </div>
-                                            {(toggleTaskInfo === task.task) & (toggleState === true) ? (
-                                                <div className="taskInfo">
-                                                    {/* EXPANDED TASK INFO - UPDATE/COMPLETE/REMOVE */}
-                                                    <div className="taskInputDiv">
-                                                        <input
-                                                            className="taskUpdateInput"
-                                                            type="text"
-                                                            placeholder="Edit current task"
-                                                            id="updatedTask"
-                                                            onChange={(e) => {
-                                                                setNewUpdatedTask(e.target.value);
-                                                            }}
-                                                        />
-                                                        <div className="button updateButton" onClick={updateTask} id={task.id}>
-                                                            Update Task
-                                                        </div>
-                                                    </div>
-                                                    {/* MARK TASK AS COMPLETED */}
-                                                    <div className="button completedButton" onClick={completeTask} id={task.id}>
-                                                        Completed
-                                                    </div>
-                                                    {/* DELETE TASK */}
-                                                    <div
-                                                        className="button removeButton"
-                                                        onClick={() => {
-                                                            deleteTask(task.id);
+                                            {/* EXPANDED TASK INFO - UPDATE/COMPLETE/REMOVE */}
+                                            <div className={selectedTask === i ? "content show" : "content"} onClick={disableToggling}>
+                                                <div className="taskInputDiv">
+                                                    <input
+                                                        className="taskUpdateInput"
+                                                        type="text"
+                                                        placeholder="Edit current task"
+                                                        id="updatedTask"
+                                                        onChange={(e) => {
+                                                            setNewUpdatedTask(e.target.value);
                                                         }}
-                                                    >
-                                                        Remove
+                                                    />
+                                                    <div className="button updateButton" onClick={updateTask} id={task.id}>
+                                                        Update Task
                                                     </div>
                                                 </div>
-                                            ) : null}
+                                                {/* MARK TASK AS COMPLETED */}
+                                                <div className="button completedButton" onClick={completeTask} id={task.id}>
+                                                    Completed
+                                                </div>
+                                                {/* DELETE TASK */}
+                                                <div
+                                                    className="button removeButton"
+                                                    onClick={() => {
+                                                        deleteTask(task.id);
+                                                    }}
+                                                >
+                                                    Remove
+                                                </div>
+                                            </div>
                                         </div>
                                     );
                                 }
