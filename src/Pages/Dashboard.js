@@ -23,6 +23,7 @@ function Dashboard() {
     const [newTaskType, setNewTaskType] = useState("");
     const [newTaskPriority, setNewTaskPriority] = useState("");
     const [newUpdatedTask, setNewUpdatedTask] = useState("");
+    const [completedTask, setCompletedTask] = useState([]);
 
     const [updateList, setUpdateList] = useState(false);
 
@@ -46,6 +47,9 @@ function Dashboard() {
             const filteredProject = allTasks.filter((id) => id.project === selectedProjectID);
             console.log(filteredProject);
             setTasks(filteredProject);
+            /* Filters out all project completed tasks */
+            const completedTasks = filteredProject.filter((completedTask) => completedTask.completed === true);
+            setCompletedTask(completedTasks);
         };
         getTasks();
     }, [selectedProjectID, updateList]);
@@ -352,8 +356,8 @@ function Dashboard() {
                                 </div>
                             ) : null}
                         </div>
-
-                        <h3>Completed</h3>
+                        {/* COMPLETED TASKS */}
+                        {completedTask.length > 0 ? <h3>Completed</h3> : null}
                         {tasks
                             .sort((a, b) => (a.date_completed > b.date_completed ? -1 : 1))
                             .map((task) => {
