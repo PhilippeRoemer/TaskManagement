@@ -43,6 +43,7 @@ function Dashboard() {
             console.log(data.docs);
             const allTasks = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
             console.log(allTasks);
+            setSelectedTask(null);
             /* Filters tasks by the selected project */
             const filteredProject = allTasks.filter((id) => id.project === selectedProjectID);
             console.log(filteredProject);
