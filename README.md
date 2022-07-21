@@ -4,5 +4,5 @@ Task Management is an application built on React and combined with Firebase for 
 
 <img src="images/DashboardScreenshot.jpg">
 
-Firestore Data Model
+Firestore Data Model<br />
 <img src="images/Firestore_DataModel.jpg" width="400px">
