@@ -265,6 +265,10 @@ h3 {
     color: #f6f7f9;
 }
 
+.expandedAddTaskButton:hover {
+    background-color: #043242;
+}
+
 .expandedAddTaskContainer {
     display: flex;
 }
@@ -437,10 +441,12 @@ h3 {
 .signoutButton {
     background-color: #054257;
     color: #fff;
-    padding: 1px 7px 1px 7px;
+    border-radius: 15px;
+    padding: 7px;
     border-radius: 10px;
     border: 1px solid #1b3a572e;
     box-shadow: 0 0 3px #1b3a5762;
+    font-weight: bold;
 }
 
 .signoutButton:hover {
