@@ -117,6 +117,13 @@ function Dashboard() {
         }
     };
 
+    /* CREATE TASK ON ENTER*/
+    const createTaskOnEnter = (e) => {
+        if (e.code === "Enter") {
+            createTask();
+        }
+    };
+
     /* UPDATE TASK */
     const updateTask = async (e) => {
         const taskID = e.target.id;
@@ -323,6 +330,7 @@ function Dashboard() {
                                         onChange={(e) => {
                                             setNewTask(e.target.value);
                                         }}
+                                        onKeyPress={createTaskOnEnter}
                                     />
                                     <select
                                         className="dropdown"
