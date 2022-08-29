@@ -240,7 +240,7 @@ function Dashboard() {
                         <b>User Logged In:</b> {user ? user.email : "Not Logged In"}
                     </p>
                     <div className="signoutButton" onClick={logout}>
-                        Signout
+                        Sign out
                     </div>
                 </div>
                 {selectedProjectID == "" ? (
