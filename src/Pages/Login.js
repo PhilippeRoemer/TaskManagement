@@ -41,6 +41,12 @@ function Login() {
         }
     };
 
+    const registerOnEnter = (e) => {
+        if (e.code === "Enter") {
+            register();
+        }
+    };
+
     const login = async () => {
         try {
             const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
@@ -50,6 +56,12 @@ function Login() {
         } catch (error) {
             console.log(error.message);
             alert("Incorrect email or password");
+        }
+    };
+
+    const loginOnEnter = (e) => {
+        if (e.code === "Enter") {
+            login();
         }
     };
 
@@ -72,6 +84,7 @@ function Login() {
                                 onChange={(e) => {
                                     setLoginEmail(e.target.value);
                                 }}
+                                onKeyPress={loginOnEnter}
                             />
                         </div>
                         <div>
@@ -82,6 +95,7 @@ function Login() {
                                 onChange={(e) => {
                                     setLoginPassword(e.target.value);
                                 }}
+                                onKeyPress={loginOnEnter}
                             />
                         </div>
                         <div className="button loginButton" onClick={login}>
@@ -90,7 +104,7 @@ function Login() {
                     </div>
                 ) : (
                     <div>
-                        <h3 className="loginSubTitle">Create Account</h3>
+                        <h3 className="loginSubTitle">Create an Account</h3>
                         <div>
                             <input
                                 className="loginInput"
@@ -99,6 +113,7 @@ function Login() {
                                 onChange={(e) => {
                                     setRegisteredEmail(e.target.value);
                                 }}
+                                onKeyPress={registerOnEnter}
                             />
                         </div>
                         <div>
@@ -109,6 +124,7 @@ function Login() {
                                 onChange={(e) => {
                                     setRegisteredPassword(e.target.value);
                                 }}
+                                onKeyPress={registerOnEnter}
                             />
                         </div>
                         <div className="button loginButton" onClick={register}>
