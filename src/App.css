@@ -196,6 +196,7 @@ h3 {
 .updateButton {
     background-color: #054257;
     color: #f6f7f9;
+    margin-right: 20px;
 }
 
 .updateButton:hover {
@@ -222,6 +223,7 @@ h3 {
 
 .taskInputDiv {
     display: flex;
+    align-items: center;
 }
 
 .taskUpdateInput {
@@ -273,6 +275,16 @@ h3 {
 
 .expandedAddTaskContainer {
     display: flex;
+    align-items: center;
+}
+
+.expandedAddTaskContainer input {
+    margin-right: 20px;
+}
+
+.expandedAddTaskContainer select {
+    margin-left: 5px;
+    margin-right: 20px;
 }
 
 .completedTaskDelete {
@@ -529,10 +541,18 @@ h3 {
 }
 
 .updateTaskContainer input {
+    margin-left: 5px;
     margin-right: 20px;
 }
 
-.updateTaskContainer select {
-    margin-left: 5px;
-    margin-right: 20px;
+.updatePriorityContainer {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.updateTypeContainer {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }

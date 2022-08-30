@@ -20,8 +20,8 @@ function Dashboard() {
     const [tasks, setTasks] = useState([]);
     const [toggleAddTask, setToggleAddTask] = useState(false);
     const [newTask, setNewTask] = useState("");
-    const [newTaskType, setNewTaskType] = useState("");
-    const [newTaskPriority, setNewTaskPriority] = useState("");
+    const [newTaskType, setNewTaskType] = useState("Task");
+    const [newTaskPriority, setNewTaskPriority] = useState("Low");
     const [newUpdatedTask, setNewUpdatedTask] = useState("");
     const [completedTask, setCompletedTask] = useState([]);
 
@@ -111,8 +111,8 @@ function Dashboard() {
 
             setNewTask("");
             setToggleAddTask(false);
-            setNewTaskPriority("");
-            setNewTaskType("");
+            /*             setNewTaskPriority("");
+            setNewTaskType(""); */
             setUpdateList(!updateList);
         }
     };
@@ -146,7 +146,6 @@ function Dashboard() {
         const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID, "tasks", taskID);
         const newFields = { priority: e.target.value };
         await updateDoc(taskDoc, newFields);
-        /* document.getElementById("updatedTask").value = ""; */
         setUpdateList(!updateList);
     };
 
@@ -156,7 +155,6 @@ function Dashboard() {
         const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID, "tasks", taskID);
         const newFields = { type: e.target.value };
         await updateDoc(taskDoc, newFields);
-        /* document.getElementById("updatedTask").value = ""; */
         setUpdateList(!updateList);
     };
 
@@ -204,6 +202,7 @@ function Dashboard() {
         }
         console.log(selectedTask);
         setSelectedTask(i);
+        setNewUpdatedTask("");
     };
 
     /* DISABLE TASK INFO TOGGLING*/
@@ -299,21 +298,26 @@ function Dashboard() {
                                             <div className={selectedTask === i ? "content show" : "content"} onClick={disableToggling}>
                                                 <div className="updateTaskContainer">
                                                     <div className="taskInputDiv">
+                                                        <p>Task:</p>
                                                         <input
                                                             className="taskUpdateInput"
                                                             type="text"
                                                             placeholder="Edit current task"
                                                             id="updatedTask"
+                                                            defaultValue={task.task}
                                                             onChange={(e) => {
                                                                 setNewUpdatedTask(e.target.value);
                                                             }}
                                                         />
                                                     </div>
+                                                    <div className="button updateButton" onClick={updateTask} id={task.id}>
+                                                        Update Task
+                                                    </div>
+                                                </div>
+
+                                                <div className="updatePriorityContainer">
                                                     <p>Priority:</p>
                                                     <select className="dropdown" onChange={updatePriority} id={task.id}>
-                                                        <option disabled selected value>
-                                                            Priority
-                                                        </option>
                                                         {task.priority === "Low" ? (
                                                             <option value="Low" selected>
                                                                 Low
@@ -338,12 +342,11 @@ function Dashboard() {
                                                             <option value="High">High</option>
                                                         )}
                                                     </select>
+                                                </div>
 
+                                                <div className="updateTypeContainer">
                                                     <p>Type:</p>
                                                     <select className="dropdown" onChange={updateType} id={task.id}>
-                                                        <option disabled selected value>
-                                                            Type
-                                                        </option>
                                                         {task.type === "Task" ? (
                                                             <option value="Task" selected>
                                                                 Task
@@ -370,9 +373,6 @@ function Dashboard() {
                                                             </option>
                                                         )}
                                                     </select>
-                                                    <div className="button updateButton" onClick={updateTask} id={task.id}>
-                                                        Update Task
-                                                    </div>
                                                 </div>
                                                 {/* MARK TASK AS COMPLETED */}
                                                 <div className="button completedButton" onClick={completeTask} id={task.id}>
@@ -415,29 +415,31 @@ function Dashboard() {
                                         }}
                                         onKeyPress={createTaskOnEnter}
                                     />
+
+                                    <p>Priority:</p>
                                     <select
                                         className="dropdown"
                                         onChange={(e) => {
                                             setNewTaskPriority(e.target.value);
                                         }}
                                     >
-                                        <option disabled selected value>
-                                            Priority
+                                        <option value="Low" selected>
+                                            Low
                                         </option>
-                                        <option value="Low">Low</option>
                                         <option value="Medium">Medium</option>
                                         <option value="High">High</option>
                                     </select>
+
+                                    <p>Type:</p>
                                     <select
                                         className="dropdown"
                                         onChange={(e) => {
                                             setNewTaskType(e.target.value);
                                         }}
                                     >
-                                        <option disabled selected value>
-                                            Type
+                                        <option value="Task" selected>
+                                            Task
                                         </option>
-                                        <option value="Task">Task</option>
                                         <option value="Bug">Bug</option>
                                         <option value="Feature">Feature</option>
                                     </select>
