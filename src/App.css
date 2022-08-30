@@ -185,10 +185,12 @@ h3 {
 }
 
 .button {
-    padding: 2px 7px 2px 7px;
+    padding: 7px;
     cursor: pointer;
     border-radius: 15px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
 }
 
 .updateButton {
@@ -223,7 +225,7 @@ h3 {
 }
 
 .taskUpdateInput {
-    padding: 3px 3px 3px 10px;
+    padding: 10px;
     border-radius: 15px;
     margin-right: 5px;
     width: 200px;
@@ -506,6 +508,7 @@ h3 {
     margin-top: 10px;
     border-radius: 10px;
     justify-content: space-around;
+    align-items: center;
     border-style: solid;
     border-width: 1px;
     border-color: #1b3a572e;
@@ -518,4 +521,18 @@ h3 {
     padding: 2px 6px 2px 6px;
     border-radius: 50%;
     font-size: 0.8em;
+}
+
+.updateTaskContainer {
+    display: flex;
+    align-items: center;
+}
+
+.updateTaskContainer input {
+    margin-right: 20px;
+}
+
+.updateTaskContainer select {
+    margin-left: 5px;
+    margin-right: 20px;
 }

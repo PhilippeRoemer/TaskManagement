@@ -140,6 +140,26 @@ function Dashboard() {
         }
     };
 
+    /* UPDATE PRIORITY */
+    const updatePriority = async (e) => {
+        const taskID = e.target.id;
+        const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID, "tasks", taskID);
+        const newFields = { priority: e.target.value };
+        await updateDoc(taskDoc, newFields);
+        /* document.getElementById("updatedTask").value = ""; */
+        setUpdateList(!updateList);
+    };
+
+    /* UPDATE TYPE */
+    const updateType = async (e) => {
+        const taskID = e.target.id;
+        const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID, "tasks", taskID);
+        const newFields = { type: e.target.value };
+        await updateDoc(taskDoc, newFields);
+        /* document.getElementById("updatedTask").value = ""; */
+        setUpdateList(!updateList);
+    };
+
     /* DELETE TASK */
     const deleteTask = async (id) => {
         const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID, "tasks", id);
@@ -277,16 +297,79 @@ function Dashboard() {
                                             </div>
                                             {/* EXPANDED TASK INFO - UPDATE/COMPLETE/REMOVE */}
                                             <div className={selectedTask === i ? "content show" : "content"} onClick={disableToggling}>
-                                                <div className="taskInputDiv">
-                                                    <input
-                                                        className="taskUpdateInput"
-                                                        type="text"
-                                                        placeholder="Edit current task"
-                                                        id="updatedTask"
-                                                        onChange={(e) => {
-                                                            setNewUpdatedTask(e.target.value);
-                                                        }}
-                                                    />
+                                                <div className="updateTaskContainer">
+                                                    <div className="taskInputDiv">
+                                                        <input
+                                                            className="taskUpdateInput"
+                                                            type="text"
+                                                            placeholder="Edit current task"
+                                                            id="updatedTask"
+                                                            onChange={(e) => {
+                                                                setNewUpdatedTask(e.target.value);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <p>Priority:</p>
+                                                    <select className="dropdown" onChange={updatePriority} id={task.id}>
+                                                        <option disabled selected value>
+                                                            Priority
+                                                        </option>
+                                                        {task.priority === "Low" ? (
+                                                            <option value="Low" selected>
+                                                                Low
+                                                            </option>
+                                                        ) : (
+                                                            <option value="Low">Low</option>
+                                                        )}
+
+                                                        {task.priority === "Medium" ? (
+                                                            <option value="Medium" selected>
+                                                                Medium
+                                                            </option>
+                                                        ) : (
+                                                            <option value="Medium">Medium</option>
+                                                        )}
+
+                                                        {task.priority === "High" ? (
+                                                            <option value="High" selected>
+                                                                High
+                                                            </option>
+                                                        ) : (
+                                                            <option value="High">High</option>
+                                                        )}
+                                                    </select>
+
+                                                    <p>Type:</p>
+                                                    <select className="dropdown" onChange={updateType} id={task.id}>
+                                                        <option disabled selected value>
+                                                            Type
+                                                        </option>
+                                                        {task.type === "Task" ? (
+                                                            <option value="Task" selected>
+                                                                Task
+                                                            </option>
+                                                        ) : (
+                                                            <option value="Task">Task</option>
+                                                        )}
+
+                                                        {task.type === "Bug" ? (
+                                                            <option value="Bug" selected>
+                                                                Bug
+                                                            </option>
+                                                        ) : (
+                                                            <option value="Bug">Bug</option>
+                                                        )}
+
+                                                        {task.type === "Feature" ? (
+                                                            <option value="Feature" selected>
+                                                                Feature
+                                                            </option>
+                                                        ) : (
+                                                            <option value="Feature" id={task.id}>
+                                                                Feature
+                                                            </option>
+                                                        )}
+                                                    </select>
                                                     <div className="button updateButton" onClick={updateTask} id={task.id}>
                                                         Update Task
                                                     </div>
