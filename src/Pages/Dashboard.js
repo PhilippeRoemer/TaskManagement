@@ -314,65 +314,66 @@ function Dashboard() {
                                                         Update Task
                                                     </div>
                                                 </div>
+                                                <div className="dropdownUpdateContainer">
+                                                    <div className="updatePriorityContainer">
+                                                        <p>Priority:</p>
+                                                        <select className="dropdown" onChange={updatePriority} id={task.id}>
+                                                            {task.priority === "Low" ? (
+                                                                <option value="Low" selected>
+                                                                    Low
+                                                                </option>
+                                                            ) : (
+                                                                <option value="Low">Low</option>
+                                                            )}
 
-                                                <div className="updatePriorityContainer">
-                                                    <p>Priority:</p>
-                                                    <select className="dropdown" onChange={updatePriority} id={task.id}>
-                                                        {task.priority === "Low" ? (
-                                                            <option value="Low" selected>
-                                                                Low
-                                                            </option>
-                                                        ) : (
-                                                            <option value="Low">Low</option>
-                                                        )}
+                                                            {task.priority === "Medium" ? (
+                                                                <option value="Medium" selected>
+                                                                    Medium
+                                                                </option>
+                                                            ) : (
+                                                                <option value="Medium">Medium</option>
+                                                            )}
 
-                                                        {task.priority === "Medium" ? (
-                                                            <option value="Medium" selected>
-                                                                Medium
-                                                            </option>
-                                                        ) : (
-                                                            <option value="Medium">Medium</option>
-                                                        )}
+                                                            {task.priority === "High" ? (
+                                                                <option value="High" selected>
+                                                                    High
+                                                                </option>
+                                                            ) : (
+                                                                <option value="High">High</option>
+                                                            )}
+                                                        </select>
+                                                    </div>
 
-                                                        {task.priority === "High" ? (
-                                                            <option value="High" selected>
-                                                                High
-                                                            </option>
-                                                        ) : (
-                                                            <option value="High">High</option>
-                                                        )}
-                                                    </select>
-                                                </div>
+                                                    <div className="updateTypeContainer">
+                                                        <p>Type:</p>
+                                                        <select className="dropdown" onChange={updateType} id={task.id}>
+                                                            {task.type === "Task" ? (
+                                                                <option value="Task" selected>
+                                                                    Task
+                                                                </option>
+                                                            ) : (
+                                                                <option value="Task">Task</option>
+                                                            )}
 
-                                                <div className="updateTypeContainer">
-                                                    <p>Type:</p>
-                                                    <select className="dropdown" onChange={updateType} id={task.id}>
-                                                        {task.type === "Task" ? (
-                                                            <option value="Task" selected>
-                                                                Task
-                                                            </option>
-                                                        ) : (
-                                                            <option value="Task">Task</option>
-                                                        )}
+                                                            {task.type === "Bug" ? (
+                                                                <option value="Bug" selected>
+                                                                    Bug
+                                                                </option>
+                                                            ) : (
+                                                                <option value="Bug">Bug</option>
+                                                            )}
 
-                                                        {task.type === "Bug" ? (
-                                                            <option value="Bug" selected>
-                                                                Bug
-                                                            </option>
-                                                        ) : (
-                                                            <option value="Bug">Bug</option>
-                                                        )}
-
-                                                        {task.type === "Feature" ? (
-                                                            <option value="Feature" selected>
-                                                                Feature
-                                                            </option>
-                                                        ) : (
-                                                            <option value="Feature" id={task.id}>
-                                                                Feature
-                                                            </option>
-                                                        )}
-                                                    </select>
+                                                            {task.type === "Feature" ? (
+                                                                <option value="Feature" selected>
+                                                                    Feature
+                                                                </option>
+                                                            ) : (
+                                                                <option value="Feature" id={task.id}>
+                                                                    Feature
+                                                                </option>
+                                                            )}
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 {/* MARK TASK AS COMPLETED */}
                                                 <div className="button completedButton" onClick={completeTask} id={task.id}>
