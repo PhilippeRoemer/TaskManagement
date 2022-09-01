@@ -341,6 +341,7 @@ h3 {
     border-radius: 10px;
     border: 1px solid #1b3a572e;
     box-shadow: 0 0 3px #1b3a5762;
+    max-height: 20px;
 }
 
 .taskGlancePriorityLow {
@@ -350,6 +351,7 @@ h3 {
     padding: 11px;
     border: 1px solid #1b3a572e;
     box-shadow: 0 0 3px #1b3a5762;
+    max-height: 0px;
 }
 
 .taskGlancePriorityMedium {
@@ -359,6 +361,7 @@ h3 {
     padding: 11px;
     border: 1px solid #1b3a572e;
     box-shadow: 0 0 3px #1b3a5762;
+    max-height: 0px;
 }
 
 .taskGlancePriorityHigh {
@@ -368,6 +371,7 @@ h3 {
     padding: 11px;
     border: 1px solid #1b3a572e;
     box-shadow: 0 0 3px #1b3a5762;
+    max-height: 0px;
 }
 
 .dropdown {
@@ -461,6 +465,7 @@ h3 {
     border: 1px solid #1b3a572e;
     box-shadow: 0 0 3px #1b3a5762;
     font-weight: bold;
+    white-space: nowrap;
 }
 
 .signoutButton:hover {
