@@ -455,20 +455,32 @@ function Dashboard() {
                         {completedTask.length > 0 ? <h3>Completed</h3> : null}
                         {tasks
                             .sort((a, b) => (a.date_completed > b.date_completed ? -1 : 1))
-                            .map((task) => {
+                            .map((task, i) => {
                                 if (task.completed === true) {
                                     return (
-                                        <div className="completedTasks">
-                                            <p>{task.task}</p>
-                                            <div>
-                                                <img
-                                                    alt="#"
-                                                    src={trashIcon}
-                                                    className="completedTaskDelete"
+                                        <div className="taskDiv" onClick={() => toggleTask(i)}>
+                                            {/* TASK */}
+                                            <div className="taskTitle">
+                                                <p id={task.task}>{task.task}</p>
+                                                <div className="completedTaskGlanceDiv">{selectedTask === i ? "-" : "+"}</div>
+                                            </div>
+                                            {/* EXPANDED TASK INFO - UPDATE/COMPLETE/REMOVE */}
+                                            <div className={selectedTask === i ? "content show" : "content"} onClick={disableToggling}>
+                                                <div className="updateTaskContainer">
+                                                    <div className="button updateButton" onClick={updateTask} id={task.id}>
+                                                        Move to To Do
+                                                    </div>
+                                                </div>
+
+                                                {/* DELETE TASK */}
+                                                <div
+                                                    className="button removeButton"
                                                     onClick={() => {
-                                                        deleteCompletedTask(task.id);
+                                                        deleteTask(task.id);
                                                     }}
-                                                />
+                                                >
+                                                    Remove
+                                                </div>
                                             </div>
                                         </div>
                                     );

@@ -335,6 +335,11 @@ h3 {
     justify-content: space-between;
 }
 
+.completedTaskGlanceDiv {
+    display: flex;
+    justify-content: space-between;
+}
+
 .taskGlanceType {
     background-color: #003851bd;
     color: #fff;
