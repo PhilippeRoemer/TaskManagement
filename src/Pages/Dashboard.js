@@ -111,8 +111,8 @@ function Dashboard() {
 
             setNewTask("");
             setToggleAddTask(false);
-            /*             setNewTaskPriority("");
-            setNewTaskType(""); */
+            setNewTaskPriority("Low");
+            setNewTaskType("Task");
             setUpdateList(!updateList);
         }
     };
@@ -167,6 +167,19 @@ function Dashboard() {
         const taskStatusUpdate = { tasks_open: increment(-1) };
         await updateDoc(projectDoc, taskStatusUpdate);
 
+        setUpdateList(!updateList);
+    };
+
+    /* MOVE TASK TO ToDo */
+    const moveTaskToDo = async (e) => {
+        const taskID = e.target.id;
+        const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID, "tasks", taskID);
+        const newFields = { completed: false };
+        await updateDoc(taskDoc, newFields);
+
+        const projectDoc = doc(db, "users", user.uid, "projects", selectedProjectID);
+        const taskStatusUpdate = { tasks_open: increment(1), tasks_completed: increment(-1) };
+        await updateDoc(projectDoc, taskStatusUpdate);
         setUpdateList(!updateList);
     };
 
@@ -467,7 +480,7 @@ function Dashboard() {
                                             {/* EXPANDED TASK INFO - UPDATE/COMPLETE/REMOVE */}
                                             <div className={selectedTask === i ? "content show" : "content"} onClick={disableToggling}>
                                                 <div className="updateTaskContainer">
-                                                    <div className="button updateButton" onClick={updateTask} id={task.id}>
+                                                    <div className="button updateButton" onClick={moveTaskToDo} id={task.id}>
                                                         Move to To Do
                                                     </div>
                                                 </div>
@@ -476,7 +489,7 @@ function Dashboard() {
                                                 <div
                                                     className="button removeButton"
                                                     onClick={() => {
-                                                        deleteTask(task.id);
+                                                        deleteCompletedTask(task.id);
                                                     }}
                                                 >
                                                     Remove
