@@ -16,6 +16,7 @@ function Dashboard() {
     const [selectedProjectName, setSelectedProjectName] = useState("");
 
     const [selectedTask, setSelectedTask] = useState(null);
+    const [selectedCompletedTask, setSelectedCompletedTask] = useState(null);
 
     const [tasks, setTasks] = useState([]);
     const [toggleAddTask, setToggleAddTask] = useState(false);
@@ -195,6 +196,7 @@ function Dashboard() {
         setUpdateList(!updateList);
     };
 
+    /* COMPLETED TASK */
     const completeTask = async (e) => {
         const taskID = e.target.id;
         const taskDoc = doc(db, "users", user.uid, "projects", selectedProjectID, "tasks", taskID);
@@ -215,7 +217,19 @@ function Dashboard() {
         }
         console.log(selectedTask);
         setSelectedTask(i);
+        setSelectedCompletedTask(null);
         setNewUpdatedTask("");
+    };
+
+    /* TOGGLE SECLECTED COMPLETED TASK */
+    const toggleCompletedTask = (i) => {
+        console.log(i);
+        if (selectedCompletedTask === i) {
+            return setSelectedCompletedTask(null);
+        }
+        console.log(selectedTask);
+        setSelectedCompletedTask(i);
+        setSelectedTask(null);
     };
 
     /* DISABLE TASK INFO TOGGLING*/
@@ -471,14 +485,14 @@ function Dashboard() {
                             .map((task, i) => {
                                 if (task.completed === true) {
                                     return (
-                                        <div className="taskDiv" onClick={() => toggleTask(i)}>
+                                        <div className="taskDiv" onClick={() => toggleCompletedTask(i)}>
                                             {/* TASK */}
                                             <div className="taskTitle">
                                                 <p id={task.task}>{task.task}</p>
-                                                <div className="completedTaskGlanceDiv">{selectedTask === i ? "-" : "+"}</div>
+                                                <div className="completedTaskGlanceDiv">{selectedCompletedTask === i ? "-" : "+"}</div>
                                             </div>
                                             {/* EXPANDED TASK INFO - UPDATE/COMPLETE/REMOVE */}
-                                            <div className={selectedTask === i ? "content show" : "content"} onClick={disableToggling}>
+                                            <div className={selectedCompletedTask === i ? "content show" : "content"} onClick={disableToggling}>
                                                 <div className="updateTaskContainer">
                                                     <div className="button updateButton" onClick={moveTaskToDo} id={task.id}>
                                                         Move to To Do
