@@ -308,7 +308,6 @@ function Dashboard() {
                     <div>
                         <h1 className="projectTitle">{selectedProjectName}</h1>
                         {/* LIST OUT TO DO TASKS */}
-                        {/* <h3>To Do: {tasks.filter((obj) => obj.completed === false).length}</h3> */}
                         {toDoTask.length > 0 ? <h3>To Do: {toDoTask.length}</h3> : <h3>To Do</h3>}
                         {tasks
                             .filter((obj) => obj.completed === false)
@@ -335,7 +334,7 @@ function Dashboard() {
                                                     type="text"
                                                     placeholder="Edit current task"
                                                     id="updatedTask"
-                                                    defaultValue={task.task}
+                                                    value={task.task}
                                                     onChange={(e) => {
                                                         setNewUpdatedTask(e.target.value);
                                                     }}
