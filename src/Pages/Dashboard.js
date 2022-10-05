@@ -334,7 +334,7 @@ function Dashboard() {
                                                     type="text"
                                                     placeholder="Edit current task"
                                                     id="updatedTask"
-                                                    value={task.task}
+                                                    value={newUpdatedTask}
                                                     onChange={(e) => {
                                                         setNewUpdatedTask(e.target.value);
                                                     }}
