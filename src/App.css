@@ -408,24 +408,63 @@ h3 {
     border-color: #fff;
 }
 
+.contentContainer {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    left: 0;
+    background-color: #f1f1f3;
+    color: #1b3a57;
+}
+
 .loginContainer {
+    right: 0;
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
     background: url("./images/sidebar_background.png");
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -ms-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    -webkit-box-shadow: 5px 5px 15px 15px rgba(0, 0, 0, 0.25);
+    box-shadow: 5px 5px 15px 15px rgba(0, 0, 0, 0.25);
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
+}
+
+.loginContentText {
+    text-align: center;
+    padding-top: 15%;
+}
+
+.loginContentText p {
+    padding-top: 1%;
+}
+
+.laptopImage {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
 }
 
 .loginDiv {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
 }
 
 .loginInput {
