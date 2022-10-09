@@ -3,7 +3,7 @@ import "../App.css";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../firebase-config";
-import laptopImage from "../images/TaskManager_Laptop.jpg";
+import laptopImage from "../images/TaskManager_Laptop.png";
 
 function Login() {
     const [registerEmail, setRegisteredEmail] = useState("");
@@ -71,90 +71,91 @@ function Login() {
     };
 
     return (
-        <div>
-            <div className="contentContainer">
-                <div className="loginContentText">
+        <div class="homeContainer">
+            <div class="contentContainer">
+                <div class="contentText">
                     <h1>Task Manager</h1>
                     <p>Organize your project tasks with Task Manager.</p>
                 </div>
-
                 <img src={laptopImage} alt="" className="laptopImage" />
             </div>
-            <div className="loginContainer">
-                <div className="centered">
-                    {!toggleLogin ? (
-                        <div className="loginDiv">
-                            <h1 className="loginSubTitle">Login</h1>
-                            <div>
-                                <input
-                                    className="loginInput"
-                                    type="text"
-                                    placeholder="Email"
-                                    onChange={(e) => {
-                                        setLoginEmail(e.target.value);
-                                    }}
-                                    onKeyPress={loginOnEnter}
-                                />
-                            </div>
-                            <div>
-                                <input
-                                    className="loginInput"
-                                    type="password"
-                                    placeholder="Password"
-                                    onChange={(e) => {
-                                        setLoginPassword(e.target.value);
-                                    }}
-                                    onKeyPress={loginOnEnter}
-                                />
-                            </div>
-                            <div className="button loginButton" onClick={login}>
-                                Login
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="loginDiv">
-                            <h1 className="loginSubTitle">Create an Account</h1>
-                            <div>
-                                <input
-                                    className="loginInput"
-                                    type="text"
-                                    placeholder="Email"
-                                    onChange={(e) => {
-                                        setRegisteredEmail(e.target.value);
-                                    }}
-                                    onKeyPress={registerOnEnter}
-                                />
-                            </div>
-                            <div>
-                                <input
-                                    className="loginInput"
-                                    type="password"
-                                    placeholder="Password"
-                                    onChange={(e) => {
-                                        setRegisteredPassword(e.target.value);
-                                    }}
-                                    onKeyPress={registerOnEnter}
-                                />
-                            </div>
-                            <div className="button loginButton" onClick={register}>
-                                Create Account
-                            </div>
-                        </div>
-                    )}
-                    <div
-                        onClick={() => {
-                            setToggleLogin(!toggleLogin);
-                        }}
-                    >
+            <div class="loginContainer">
+                <div>
+                    <div>
                         {!toggleLogin ? (
-                            <p className="createAccountToggle">
-                                <u>Click here to create an account</u>
-                            </p>
+                            <div className="loginDiv">
+                                <h1 className="loginSubTitle">Login</h1>
+                                <div>
+                                    <input
+                                        className="loginInput"
+                                        type="text"
+                                        placeholder="Email"
+                                        onChange={(e) => {
+                                            setLoginEmail(e.target.value);
+                                        }}
+                                        onKeyPress={loginOnEnter}
+                                    />
+                                </div>
+                                <div>
+                                    <input
+                                        className="loginInput"
+                                        type="password"
+                                        placeholder="Password"
+                                        onChange={(e) => {
+                                            setLoginPassword(e.target.value);
+                                        }}
+                                        onKeyPress={loginOnEnter}
+                                    />
+                                </div>
+                                <div className="button loginButton" onClick={login}>
+                                    Login
+                                </div>
+                            </div>
                         ) : (
-                            <p className="createAccountToggle">
-                                <u>Click here to Login</u>
-                            </p>
+                            <div className="loginDiv">
+                                <h1 className="loginSubTitle">Create an Account</h1>
+                                <div>
+                                    <input
+                                        className="loginInput"
+                                        type="text"
+                                        placeholder="Email"
+                                        onChange={(e) => {
+                                            setRegisteredEmail(e.target.value);
+                                        }}
+                                        onKeyPress={registerOnEnter}
+                                    />
+                                </div>
+                                <div>
+                                    <input
+                                        className="loginInput"
+                                        type="password"
+                                        placeholder="Password"
+                                        onChange={(e) => {
+                                            setRegisteredPassword(e.target.value);
+                                        }}
+                                        onKeyPress={registerOnEnter}
+                                    />
+                                </div>
+                                <div className="button loginButton" onClick={register}>
+                                    Create Account
+                                </div>
+                            </div>
                         )}
+                        <div
+                            onClick={() => {
+                                setToggleLogin(!toggleLogin);
+                            }}
+                        >
+                            {!toggleLogin ? (
+                                <p className="createAccountToggle">
+                                    <u>Click here to create an account</u>
+                                </p>
+                            ) : (
+                                <p className="createAccountToggle">
+                                    <u>Click here to Login</u>
+                                </p>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
