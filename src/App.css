@@ -417,6 +417,10 @@ h3 {
     .homeContainer {
         flex-direction: column;
     }
+    .contentText {
+        padding-top: 25%;
+        padding-bottom: 25%;
+    }
     .loginContainer {
         padding-top: 25%;
         padding-bottom: 25%;
