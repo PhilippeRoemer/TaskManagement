@@ -10,6 +10,8 @@ function Login() {
     const [registerPassword, setRegisteredPassword] = useState("");
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
+    const [loginErrorMessage, setLoginErrorMessage] = useState(false);
+    const [createAccountErrorMessage, setCreateAccountErrorMessage] = useState(null);
 
     const [toggleLogin, setToggleLogin] = useState(false);
 
@@ -27,17 +29,18 @@ function Login() {
         try {
             const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
             console.log(user);
+            setCreateAccountErrorMessage(null);
             navigate("/dashboard");
         } catch (error) {
             console.log(error.message);
             if (error.message === "Firebase: Password should be at least 6 characters (auth/weak-password).") {
-                alert("Password should be at least 6 characters");
+                setCreateAccountErrorMessage("Password should be at least 6 characters");
             } else if (error.message === "Firebase: Error (auth/invalid-email).") {
-                alert("Please enter an email");
+                setCreateAccountErrorMessage("Please enter an email");
             } else if (error.message === "Firebase: Error (auth/email-already-in-use).") {
-                alert("The email you entered is already in use");
+                setCreateAccountErrorMessage("The email you entered is already in use");
             } else {
-                alert("Please enter an email and password to create an account");
+                setCreateAccountErrorMessage("Please enter an email and password to create an account");
             }
         }
     };
@@ -53,10 +56,11 @@ function Login() {
             const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
             console.log(user);
             console.log("You're in!");
+            setLoginErrorMessage(false);
             navigate("/dashboard");
         } catch (error) {
             console.log(error.message);
-            alert("Incorrect email or password");
+            setLoginErrorMessage(true);
         }
     };
 
@@ -107,6 +111,7 @@ function Login() {
                                         onKeyPress={loginOnEnter}
                                     />
                                 </div>
+                                {loginErrorMessage === false ? null : <p className="errorMessage">Incorrect email or password</p>}
                                 <div className="button loginButton" onClick={login}>
                                     Login
                                 </div>
@@ -136,6 +141,7 @@ function Login() {
                                         onKeyPress={registerOnEnter}
                                     />
                                 </div>
+                                {createAccountErrorMessage === null ? null : <p className="errorMessage">{createAccountErrorMessage}</p>}
                                 <div className="button loginButton" onClick={register}>
                                     Create Account
                                 </div>

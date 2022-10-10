@@ -508,6 +508,15 @@ h3 {
     background-color: #051e34a8;
 }
 
+.errorMessage {
+    color: #bd4747;
+    padding: 10px;
+    background-color: #051e34a8;
+    margin-top: 15px;
+    font-weight: bold;
+    border-radius: 15px;
+}
+
 .userDiv {
     display: flex;
     justify-content: space-between;
