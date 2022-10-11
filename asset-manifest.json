@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/TaskManagement/static/css/main.ec2b24e0.css",
-    "main.js": "/TaskManagement/static/js/main.6eaa2dfc.js",
+    "main.js": "/TaskManagement/static/js/main.d14aae29.js",
     "static/media/TaskManager_Laptop.png": "/TaskManagement/static/media/TaskManager_Laptop.2e4c88d489c9ee0862cb.png",
     "static/media/sidebar_background.png": "/TaskManagement/static/media/sidebar_background.0adb88067447f51cbe92.png",
     "static/media/trash_icon.png": "/TaskManagement/static/media/trash_icon.61e22baa50a615fa98ad.png",
     "index.html": "/TaskManagement/index.html",
     "main.ec2b24e0.css.map": "/TaskManagement/static/css/main.ec2b24e0.css.map",
-    "main.6eaa2dfc.js.map": "/TaskManagement/static/js/main.6eaa2dfc.js.map"
+    "main.d14aae29.js.map": "/TaskManagement/static/js/main.d14aae29.js.map"
   },
   "entrypoints": [
     "static/css/main.ec2b24e0.css",
-    "static/js/main.6eaa2dfc.js"
+    "static/js/main.d14aae29.js"
   ]
 }
