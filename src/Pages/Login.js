@@ -70,6 +70,17 @@ function Login() {
         }
     };
 
+    const toggle = () => {
+        setToggleLogin(!toggleLogin);
+        setLoginEmail("");
+        setLoginPassword("");
+
+        setRegisteredEmail("");
+        setRegisteredPassword("");
+        setLoginErrorMessage(false);
+        setCreateAccountErrorMessage(null);
+    };
+
     const logout = async () => {
         await signOut(auth);
     };
@@ -94,6 +105,7 @@ function Login() {
                                         className="loginInput"
                                         type="text"
                                         placeholder="Email"
+                                        value={loginEmail}
                                         onChange={(e) => {
                                             setLoginEmail(e.target.value);
                                         }}
@@ -105,6 +117,7 @@ function Login() {
                                         className="loginInput"
                                         type="password"
                                         placeholder="Password"
+                                        value={loginPassword}
                                         onChange={(e) => {
                                             setLoginPassword(e.target.value);
                                         }}
@@ -124,6 +137,7 @@ function Login() {
                                         className="loginInput"
                                         type="text"
                                         placeholder="Email"
+                                        value={registerEmail}
                                         onChange={(e) => {
                                             setRegisteredEmail(e.target.value);
                                         }}
@@ -135,6 +149,7 @@ function Login() {
                                         className="loginInput"
                                         type="password"
                                         placeholder="Password"
+                                        value={registerPassword}
                                         onChange={(e) => {
                                             setRegisteredPassword(e.target.value);
                                         }}
@@ -147,11 +162,7 @@ function Login() {
                                 </div>
                             </div>
                         )}
-                        <div
-                            onClick={() => {
-                                setToggleLogin(!toggleLogin);
-                            }}
-                        >
+                        <div onClick={toggle}>
                             {!toggleLogin ? (
                                 <p className="createAccountToggle">
                                     <u>Click here to create an account</u>
