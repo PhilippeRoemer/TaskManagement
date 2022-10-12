@@ -15,6 +15,9 @@ function Dashboard() {
     const [selectedProjectID, setSelectedProjectID] = useState([]);
     const [selectedProjectName, setSelectedProjectName] = useState("");
 
+    const [editProjectTitle, setEditProjectTitle] = useState("");
+    const [toggleProjectTitle, setToggleProjectTitle] = useState(false);
+
     const [selectedTask, setSelectedTask] = useState(null);
     const [selectedCompletedTask, setSelectedCompletedTask] = useState(null);
 
@@ -42,12 +45,15 @@ function Dashboard() {
     useEffect(() => {
         const getTasks = async () => {
             const data = await getDocs(collection(db, "users", user.uid, "projects", selectedProjectID, "tasks"));
+            console.log("Data docs:");
             console.log(data.docs);
             const allTasks = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+            console.log("All tasks:");
             console.log(allTasks);
             setSelectedTask(null);
             /* Filters tasks by the selected project */
             const filteredProject = allTasks.filter((id) => id.project === selectedProjectID);
+            console.log("Filtered project:");
             console.log(filteredProject);
             setTasks(filteredProject);
             /* Filters out all todo tasks */
@@ -126,6 +132,21 @@ function Dashboard() {
     const createTaskOnEnter = (e) => {
         if (e.code === "Enter") {
             createTask();
+        }
+    };
+
+    /* UPDATE PROJECT TITLE */
+    const updateProjectTitle = async () => {
+        console.log(editProjectTitle);
+        if (editProjectTitle !== "") {
+            const projectDoc = doc(db, "users", user.uid, "projects", selectedProjectID);
+            const updatedTitle = { project: editProjectTitle };
+
+            await updateDoc(projectDoc, updatedTitle);
+            setUpdateList(!updateList);
+            setToggleProjectTitle(!toggleProjectTitle);
+        } else {
+            setToggleProjectTitle(!toggleProjectTitle);
         }
     };
 
@@ -255,6 +276,7 @@ function Dashboard() {
                                 onClick={() => {
                                     setSelectedProjectID(project.id);
                                     setSelectedProjectName(project.project);
+                                    setEditProjectTitle("");
                                     setToggleAddTask(false);
                                 }}
                             >
@@ -306,7 +328,31 @@ function Dashboard() {
                     </div>
                 ) : (
                     <div>
-                        <h1 className="projectTitle">{selectedProjectName}</h1>
+                        <div className="projectTitleContainer">
+                            {!toggleProjectTitle ? (
+                                <h1
+                                    className="projectTitle"
+                                    onClick={() => {
+                                        setToggleProjectTitle(!toggleProjectTitle);
+                                    }}
+                                >
+                                    {selectedProjectName === editProjectTitle || editProjectTitle === "" ? selectedProjectName : editProjectTitle}
+                                </h1>
+                            ) : (
+                                <input
+                                    className="editProjectTitleInput"
+                                    type="text"
+                                    placeholder="Task"
+                                    id="newTask"
+                                    defaultValue={selectedProjectName === editProjectTitle || editProjectTitle === "" ? selectedProjectName : editProjectTitle}
+                                    onChange={(e) => {
+                                        setEditProjectTitle(e.target.value);
+                                    }}
+                                    onBlur={updateProjectTitle}
+                                    autoFocus
+                                />
+                            )}
+                        </div>
                         {/* LIST OUT TO DO TASKS */}
                         {toDoTask.length > 0 ? <h3>To Do: {toDoTask.length}</h3> : <h3>To Do</h3>}
                         {tasks
