@@ -48,13 +48,15 @@ h3 {
 }
 
 .editProjectTitleInput {
-    padding: 10px;
-    width: 200px;
+    padding: 1%;
+    width: 250px;
     border-style: solid;
     border-color: #1b3a572e;
     border-width: 1px;
     border-radius: 15px;
-    font-size: 24px;
+    font-size: 30px;
+    color: #1b3a57;
+    font-weight: bold;
 }
 
 .editProjectTitleInput:focus {
