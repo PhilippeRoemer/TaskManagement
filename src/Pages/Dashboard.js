@@ -14,6 +14,7 @@ function Dashboard() {
     const [newProject, setNewProject] = useState("");
     const [selectedProjectID, setSelectedProjectID] = useState([]);
     const [selectedProjectName, setSelectedProjectName] = useState("");
+    const [projectErrorMessage, setProjectErrorMessage] = useState(false);
 
     const [editProjectTitle, setEditProjectTitle] = useState("");
     const [toggleProjectTitle, setToggleProjectTitle] = useState(false);
@@ -65,6 +66,7 @@ function Dashboard() {
         };
         getTasks();
         setToggleAddProject(false);
+        setProjectErrorMessage(false);
     }, [selectedProjectID, updateList]);
 
     /* GET PROJECTS */
@@ -90,7 +92,7 @@ function Dashboard() {
     /* CREATE PROJECT */
     const createProject = async () => {
         if (newProject === "") {
-            alert("Enter Project");
+            setProjectErrorMessage(true);
         } else {
             await addDoc(collection(db, "users", user.uid, "projects"), {
                 project: newProject,
@@ -98,6 +100,7 @@ function Dashboard() {
             });
             setNewProject("");
             setToggleAddProject(false);
+            setProjectErrorMessage(false);
             setUpdateList(!updateList);
         }
     };
@@ -107,6 +110,13 @@ function Dashboard() {
         if (e.code === "Enter") {
             createProject();
         }
+    };
+
+    /* RESET PROJECT TOGGLE */
+    const resetProjectToggle = () => {
+        setToggleAddProject(!toggleAddProject);
+        setProjectErrorMessage(false);
+        setNewProject("");
     };
 
     /* DELETE PROJECT */
@@ -305,12 +315,7 @@ function Dashboard() {
                         );
                     })}
 
-                <div
-                    className="addProjectButton"
-                    onClick={() => {
-                        setToggleAddProject(!toggleAddProject);
-                    }}
-                >
+                <div className="addProjectButton" onClick={resetProjectToggle}>
                     {!toggleAddProject ? <p>+ Add a new project</p> : <p>- Add a new project</p>}
                 </div>
                 {toggleAddProject ? (
@@ -332,6 +337,7 @@ function Dashboard() {
                         </div>
                     </div>
                 ) : null}
+                {projectErrorMessage === false ? null : <p className="errorMessage">Enter a project name</p>}
             </div>
             {/* PAGE CONTENT/PROJECT TASKS */}
             <div className="pageContent">
