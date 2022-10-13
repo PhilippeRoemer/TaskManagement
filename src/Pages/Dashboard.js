@@ -11,7 +11,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 function Dashboard() {
     const [projects, setProjects] = useState([]);
     const [toggleAddProject, setToggleAddProject] = useState(false);
-    const [newProject, setNewProject] = useState("blank");
+    const [newProject, setNewProject] = useState("");
     const [selectedProjectID, setSelectedProjectID] = useState([]);
     const [selectedProjectName, setSelectedProjectName] = useState("");
 
@@ -88,14 +88,24 @@ function Dashboard() {
 
     /* CREATE PROJECT */
     const createProject = async () => {
-        await addDoc(collection(db, "users", user.uid, "projects"), {
-            project: newProject,
-            project_created: Timestamp.now(),
-        });
+        if (newProject === "") {
+            alert("Enter Project");
+        } else {
+            await addDoc(collection(db, "users", user.uid, "projects"), {
+                project: newProject,
+                project_created: Timestamp.now(),
+            });
+            setNewProject("");
+            setToggleAddProject(false);
+            setUpdateList(!updateList);
+        }
+    };
 
-        document.getElementById("newProject").value = "";
-        setToggleAddProject(false);
-        setUpdateList(!updateList);
+    /* CREATE PROJECT ON ENTER*/
+    const createProjectOnEnter = (e) => {
+        if (e.code === "Enter") {
+            createProject();
+        }
     };
 
     /* DELETE PROJECT */
@@ -309,9 +319,12 @@ function Dashboard() {
                             type="text"
                             placeholder="Project"
                             id="newProject"
+                            defaultValue={newProject}
                             onChange={(e) => {
                                 setNewProject(e.target.value);
                             }}
+                            onKeyPress={createProjectOnEnter}
+                            autoFocus
                         />
                         <div className="expandedAddProjectButton" onClick={createProject}>
                             Add Project
@@ -502,6 +515,7 @@ function Dashboard() {
                                             setNewTask(e.target.value);
                                         }}
                                         onKeyPress={createTaskOnEnter}
+                                        autoFocus
                                     />
 
                                     <p>Priority:</p>
