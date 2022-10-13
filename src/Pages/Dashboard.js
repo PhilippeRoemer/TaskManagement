@@ -369,7 +369,12 @@ function Dashboard() {
                             .map((task, i) => (
                                 <div className="taskDiv" onClick={() => toggleTask(i)}>
                                     {/* TASK */}
-                                    <div className="taskTitle">
+                                    <div
+                                        className="taskTitle"
+                                        onClick={() => {
+                                            setNewUpdatedTask(task.task);
+                                        }}
+                                    >
                                         <p id={task.task}>{task.task}</p>
                                         <div className="taskGlanceDiv">
                                             <div className={task.priority === "Low" ? "taskGlancePriorityLow" : task.priority === "Medium" ? "taskGlancePriorityMedium" : task.priority === "High" ? "taskGlancePriorityHigh" : null}> </div>
@@ -388,7 +393,7 @@ function Dashboard() {
                                                     type="text"
                                                     placeholder="Edit current task"
                                                     id="updatedTask"
-                                                    value={newUpdatedTask}
+                                                    value={task.task === newUpdatedTask || newUpdatedTask === "" ? task.task : newUpdatedTask}
                                                     onChange={(e) => {
                                                         setNewUpdatedTask(e.target.value);
                                                     }}
