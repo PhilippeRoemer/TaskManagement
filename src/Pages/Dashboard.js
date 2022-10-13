@@ -64,6 +64,7 @@ function Dashboard() {
             setCompletedTask(completedTasks);
         };
         getTasks();
+        setToggleAddProject(false);
     }, [selectedProjectID, updateList]);
 
     /* GET PROJECTS */

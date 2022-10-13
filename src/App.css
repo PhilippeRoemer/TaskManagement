@@ -20,6 +20,7 @@ body {
     position: fixed;
     display: flex;
     justify-content: center;
+    align-items: center;
     text-align: center;
     flex-direction: column;
     -webkit-box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.25);
