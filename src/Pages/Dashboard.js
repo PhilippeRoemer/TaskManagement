@@ -150,6 +150,13 @@ function Dashboard() {
         }
     };
 
+    /* UPDATE PROJECT TITLE ON ENTER*/
+    const updateProjectTitleOnEnter = (e) => {
+        if (e.code === "Enter") {
+            updateProjectTitle();
+        }
+    };
+
     /* UPDATE TASK */
     const updateTask = async (e) => {
         const taskID = e.target.id;
@@ -349,6 +356,7 @@ function Dashboard() {
                                         setEditProjectTitle(e.target.value);
                                     }}
                                     onBlur={updateProjectTitle}
+                                    onKeyPress={updateProjectTitleOnEnter}
                                     autoFocus
                                 />
                             )}
