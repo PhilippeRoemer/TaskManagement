@@ -645,6 +645,13 @@ h3 {
     font-size: 0.8em;
 }
 
+.tasksOpenDouble {
+    padding: 2px 2px;
+    background-color: #ff00009e;
+    border-radius: 50%;
+    font-size: 0.8em;
+}
+
 .updateTaskContainer {
     display: flex;
     align-items: center;

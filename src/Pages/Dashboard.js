@@ -309,7 +309,7 @@ function Dashboard() {
                                 }}
                             >
                                 <p>
-                                    {project.project} {project.tasks_open > 0 ? <span className="tasksOpen">{project.tasks_open}</span> : null}
+                                    {project.project} {project.tasks_open === 0 ? null : project.tasks_open <= 9 ? <span className="tasksOpen">{project.tasks_open}</span> : project.tasks_open >= 10 ? <span className="tasksOpenDouble">{project.tasks_open}</span> : null}
                                 </p>
                             </div>
                         );
