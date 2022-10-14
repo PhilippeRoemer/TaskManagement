@@ -67,6 +67,7 @@ function Dashboard() {
         getTasks();
         setToggleAddProject(false);
         setProjectErrorMessage(false);
+        setSelectedCompletedTask(null);
     }, [selectedProjectID, updateList]);
 
     /* GET PROJECTS */
@@ -573,6 +574,12 @@ function Dashboard() {
                                     </div>
                                     {/* EXPANDED TASK INFO - UPDATE/COMPLETE/REMOVE */}
                                     <div className={selectedCompletedTask === i ? "content show" : "content"} onClick={disableToggling}>
+                                        <div className="completedTaskPriorityContainer">
+                                            <p>Priority: </p>
+                                            <div className={task.priority === "Low" ? "taskGlancePriorityLow" : task.priority === "Medium" ? "taskGlancePriorityMedium" : task.priority === "High" ? "taskGlancePriorityHigh" : null}> </div>
+                                        </div>
+                                        <p>Type: {task.type}</p>
+
                                         <div className="updateTaskContainer">
                                             <div className="button updateButton" onClick={moveTaskToDo} id={task.id}>
                                                 Move to To Do
