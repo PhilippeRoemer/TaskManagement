@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/TaskManagement/static/css/main.b5dfb198.css",
-    "main.js": "/TaskManagement/static/js/main.1d4071c5.js",
+    "main.css": "/TaskManagement/static/css/main.2fbf8451.css",
+    "main.js": "/TaskManagement/static/js/main.59e3af04.js",
     "static/media/TaskManager_Laptop.png": "/TaskManagement/static/media/TaskManager_Laptop.2e4c88d489c9ee0862cb.png",
     "static/media/sidebar_background.png": "/TaskManagement/static/media/sidebar_background.0adb88067447f51cbe92.png",
     "static/media/trash_icon.png": "/TaskManagement/static/media/trash_icon.61e22baa50a615fa98ad.png",
     "index.html": "/TaskManagement/index.html",
-    "main.b5dfb198.css.map": "/TaskManagement/static/css/main.b5dfb198.css.map",
-    "main.1d4071c5.js.map": "/TaskManagement/static/js/main.1d4071c5.js.map"
+    "main.2fbf8451.css.map": "/TaskManagement/static/css/main.2fbf8451.css.map",
+    "main.59e3af04.js.map": "/TaskManagement/static/js/main.59e3af04.js.map"
   },
   "entrypoints": [
-    "static/css/main.b5dfb198.css",
-    "static/js/main.1d4071c5.js"
+    "static/css/main.2fbf8451.css",
+    "static/js/main.59e3af04.js"
   ]
 }
